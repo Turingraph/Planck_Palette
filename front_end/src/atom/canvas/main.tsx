@@ -34,6 +34,11 @@ export default function act_canvas(
 
 export type t_setss_canvas = React.ActionDispatch<[action: t_act_canvas]>
 
+export type t_use_canvas = {
+	ss:t_canvas,
+	setss:t_setss_canvas
+}
+
 /*
 Target
 1.	pen

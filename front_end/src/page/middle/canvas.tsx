@@ -1,30 +1,15 @@
 import { useContext, useEffect, useReducer, useState } from "react"
+import { is_arr_has } from "../../atom/arr/utils"
 import act_canvas from "../../atom/canvas/main"
 import { init_canvas } from "../../atom/canvas/utils/utils"
 import * as a from "../../atom/type/alias"
 import { GLOBAL_CONTEXT_USE_STATE } from "../../molecule/hook/global_context"
 import style from "./canvas.module.css"
-import { is_arr_has } from "../../atom/arr/utils"
+import { t_paint_state } from "../../atom/canvas/utils/type"
+import { t_act_canvas_draw } from "../../atom/canvas/draw/type"
+import { t_act_canvas_select } from "../../atom/canvas/select/type"
 
-function write_grid_width(grid_width:number|string)
-{
-	return typeof grid_width === "string" ? grid_width : grid_width.toString() + "px"
-}
-
-function write_grid_template_rows(canvas_width:number, grid_width:number|string)
-{
-	let output = ""
-	const a_text = typeof grid_width === "string" ? grid_width : grid_width.toString() + "px"
-	let i = 0
-	while (i < canvas_width)
-	{
-		output += a_text + " "
-		i += 1
-	}
-	return output
-}
-
-function write_color(rgb:undefined|string, index:number, width:number)
+function default_grid_color(rgb:undefined|string, index:number, width:number)
 {
 	if (rgb)
 		return rgb
@@ -36,23 +21,46 @@ function write_color(rgb:undefined|string, index:number, width:number)
 	return gray
 }
 
-function highlight_div(select:boolean)
+function highlight_grid(select:boolean)
 {
 	return 	<div className="fill" style={{
 	backgroundColor:select ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0)"
 	}}></div>
 }
 
+function on_click_paint_1_grid(
+	SS_ToolMode:number, 
+	// pencil:Omit<t_paint_grids<"rgb">, "grid">,
+	pencil:t_paint_state<"rgb"> & {size:number},
+	index:number
+){
+	if (SS_ToolMode === 0)
+		return {...pencil, ...{type:"DRAW_PEN", grid:index}}
+	if (SS_ToolMode === 1)
+		return {...pencil, ...{type:"DRAW_ERASER", grid:index}}
+	if (SS_ToolMode === 3)
+		return {...pencil, ...{type:"DRAW_MIRROR", grid:index}}
+}
+
+function on_hover_grid(
+	SS_PixelSize:number,
+	select:boolean,
+	grid:number
+){
+	return {key:"select" as "select", size:SS_PixelSize, 
+		state:select, grid:grid} as t_act_canvas_select
+}
+
 export default function CANVAS({
 	canvas_width,
-	grid_width = 25,
+	grid_width = "25px" as a.t_css,
 	canvas_height,
-	grid_height = 25,
+	grid_height = "25px" as a.t_css,
 }:{
 	canvas_width:number
-	grid_width?:number|a.t_css
+	grid_width?:a.t_css
 	canvas_height:number
-	grid_height?:number|a.t_css
+	grid_height?:a.t_css
 })
 {
 	const {ss: SS_RGBArr, setss: setSS_RGBArr} = useContext(GLOBAL_CONTEXT_USE_STATE).rgb_arr
@@ -67,46 +75,41 @@ export default function CANVAS({
 		else if (SS_ToolMode <= 3 && SS_PixelSize !== PixelSize)
 			setSS_PixelSize(PixelSize)
 	}, [PixelSize, SS_PixelSize, SS_ToolMode])
-	const PENCIL = {state:SS_NewRGB, key:"rgb" as "rgb", size:SS_PixelSize}
-	const HOVER_GRID = {key:"select" as "select", size:SS_PixelSize}
 	return <div
 		className={`${style.canvas}`}
 		style ={{
-			gridTemplateRows:write_grid_template_rows(canvas_height, grid_height),
-			gridTemplateColumns:write_grid_template_rows(canvas_width, grid_width)
+			gridTemplateRows:"repeat("+canvas_height+", "+grid_height+")",
+			gridTemplateColumns:"repeat("+canvas_width+", "+grid_width+")"
 		}}
 	>{
 		SS_Canvas.arr.map((item, index:number)=>{
 			return <div key={index} 
-onMouseEnter={()=>{
-setSS_Canvas({...HOVER_GRID, ...{type:"SELECT_HOVER", grid:index, state:true}})}}
-onMouseLeave={()=>{
-setSS_Canvas({...HOVER_GRID, ...{type:"SELECT_HOVER", grid:index, state:false}})}}
+			onMouseEnter={()=>{setSS_Canvas(on_hover_grid(SS_PixelSize, true , index))}}
+			onMouseLeave={()=>{setSS_Canvas(on_hover_grid(SS_PixelSize, false, index))}}
 			onClick={()=>{
-if (SS_ToolMode === 0)
-	setSS_Canvas({...PENCIL, ...{type:"DRAW_PEN", grid:index}})
-if (SS_ToolMode === 1)
-	setSS_Canvas({...PENCIL, ...{type:"DRAW_ERASER", grid:index}})
-if (SS_ToolMode === 3)
-	setSS_Canvas({...PENCIL, ...{type:"DRAW_MIRROR", grid:index}})
-if (SS_ToolMode === 10)
-{
-	if (item.rgb !== undefined)
-		setSS_NewRGB(item.rgb)
-}
-if ([0, 3].includes(SS_ToolMode))
-{
-	if (is_arr_has(SS_RGBArr, SS_NewRGB, "rgb") === false)
-		setSS_RGBArr({type:"PUSH", input:{id:0, rgb:SS_NewRGB, select:false}})
-}
+				setSS_Canvas(on_click_paint_1_grid(
+					SS_ToolMode, 
+					{state:SS_NewRGB, key:"rgb" as "rgb", size:SS_PixelSize},
+					index,
+				) as t_act_canvas_draw)
+				if (SS_ToolMode === 10)
+				{
+					if (item.rgb !== undefined)
+						setSS_NewRGB(item.rgb)
+				}
+				if ([0, 3].includes(SS_ToolMode))
+				{
+					if (is_arr_has(SS_RGBArr, SS_NewRGB, "rgb") === false)
+						setSS_RGBArr({type:"PUSH", input:{id:0, rgb:SS_NewRGB, select:false}})
+				}
 			}}
 			style={{
-				backgroundColor:write_color(
+				backgroundColor:default_grid_color(
 				item.plan_rgb ? item.plan_rgb : item.rgb, index, SS_Canvas.width),
-				width:write_grid_width(grid_width),
-				height:write_grid_width(grid_height),
+				width:grid_width,
+				height:grid_height,
 			}}>
-			{highlight_div(item.select)}
+			{highlight_grid(item.select)}
 			</div>
 		})
 	}</div>

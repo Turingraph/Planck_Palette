@@ -27,20 +27,20 @@ export type t_canvas = {
 
 // arg = argument
 
-export type t_arg_cell<k extends keyof t_canvas_grid> = {
+export type t_paint_state<k extends keyof t_canvas_grid> = {
 	state:t_canvas_grid[k],
 	key:k
 }
 
-export type t_arg_1_grid<k extends keyof t_canvas_grid> = 
-t_arg_cell<k> & {grid:number}
+export type t_paint_1_grid<k extends keyof t_canvas_grid> = 
+t_paint_state<k> & {grid:number}
 
-export type t_arg_grids<k extends keyof t_canvas_grid> = 
-t_arg_1_grid<k> & {size:number}
+export type t_paint_grids<k extends keyof t_canvas_grid> = 
+t_paint_1_grid<k> & {size:number}
 
-export type t_arg_shape<k extends keyof t_canvas_grid> = 
-t_arg_grids<k> & {grid_2:number}
+export type t_paint_shape<k extends keyof t_canvas_grid> = 
+t_paint_grids<k> & {grid_2:number}
 
-export type t_arg_helper<k extends keyof t_canvas_grid> = Omit<t_arg_grids<k>, "key">
-export type t_arg_fixed_helper<k extends keyof t_canvas_grid> = Omit<t_arg_grids<k>, keyof t_arg_cell<k>>
-export type t_arg_helper_shape<k extends keyof t_canvas_grid> = Omit<t_arg_shape<k>, "key">
+export type t_paint_helper<k extends keyof t_canvas_grid> = Omit<t_paint_grids<k>, "key">
+export type t_paint_fixed_helper<k extends keyof t_canvas_grid> = Omit<t_paint_grids<k>, keyof t_paint_state<k>>
+export type t_paint_helper_shape<k extends keyof t_canvas_grid> = Omit<t_paint_shape<k>, "key">

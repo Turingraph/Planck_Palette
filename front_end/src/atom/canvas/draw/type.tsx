@@ -1,4 +1,4 @@
-import { t_arg_1_grid, t_arg_fixed_helper, t_arg_grids, t_arg_shape } from "../utils/type"
+import { t_paint_1_grid, t_paint_fixed_helper, t_paint_grids, t_paint_shape } from "../utils/type"
 
 export const CANVAS_ACT_DRAW = [
 	"DRAW_PEN",			// OK UI
@@ -12,11 +12,11 @@ export const CANVAS_ACT_DRAW = [
 ]
 
 export type t_act_canvas_draw = (
-	t_arg_fixed_helper<"rgb"> & {type:"DRAW_ERASER"}
+	t_paint_fixed_helper<"rgb"> & {type:"DRAW_ERASER"}
 ) | (
-	t_arg_grids<"rgb"> & {type:"DRAW_PEN"|"DRAW_MIRROR"}
+	t_paint_grids<"rgb"> & {type:"DRAW_PEN"|"DRAW_MIRROR"}
 ) | (
-	t_arg_shape<"rgb"> & {type:"DRAW_LINE"|"DRAW_CIRCLE"|"DRAW_RECTANGLE"}
+	t_paint_shape<"rgb"> & {type:"DRAW_LINE"|"DRAW_CIRCLE"|"DRAW_RECTANGLE"}
 ) | (
-	t_arg_1_grid<"rgb"> & {type:"DRAW_BACKET"|"DRAW_REPLACE_RGB"}
+	t_paint_1_grid<"rgb"> & {type:"DRAW_BACKET"|"DRAW_REPLACE_RGB"}
 )

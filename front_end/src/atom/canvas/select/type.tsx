@@ -1,4 +1,4 @@
-import { t_arg_grids, t_arg_shape } from "../utils/type"
+import { t_paint_grids, t_paint_shape } from "../utils/type"
 
 export const CANVAS_ACT_SELECT = [
 	"SELECT_HOVER",			// OK
@@ -8,5 +8,5 @@ export const CANVAS_ACT_SELECT = [
 ]
 
 export type t_act_canvas_select = (
-	t_arg_grids<"select"> & {type:"SELECT_HOVER"|"SELECT_HOVER_MIRROR"}
-) | (t_arg_shape<"select"> & {type:"SELECT_RECTANGLE"|"SELECT_CROP"})
+	t_paint_grids<"select"> & {type:"SELECT_HOVER"|"SELECT_HOVER_MIRROR"}
+) | (t_paint_shape<"select"> & {type:"SELECT_RECTANGLE"|"SELECT_CROP"})
