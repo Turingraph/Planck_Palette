@@ -110,6 +110,8 @@ export default function CANVAS({
 				if ([0, 3].includes(SS_ToolMode) && 
 					is_arr_has(SS_RGBArr, SS_NewRGB, "rgb") === false)
 					setSS_RGBArr({type:"PUSH", input:{id:0, rgb:SS_NewRGB, select:false}})
+				if (SS_ToolMode === 10 && item.rgb !== undefined)
+					setSS_NewRGB(item.rgb)
 			}}
 			onMouseMove={()=>{
 			if (Ref_MouseDown.current === true)
@@ -126,14 +128,6 @@ export default function CANVAS({
 							setSS_Canvas
 						)
 					}) as a.t_func_x<number[]>)
-				if (SS_ToolMode === 10)
-				{
-					if (item.rgb !== undefined)
-						setSS_NewRGB(item.rgb)
-				}
-				if ([0, 3].includes(SS_ToolMode) && 
-					is_arr_has(SS_RGBArr, SS_NewRGB, "rgb") === false)
-					setSS_RGBArr({type:"PUSH", input:{id:0, rgb:SS_NewRGB, select:false}})
 			}
 		}}
 			style={{
