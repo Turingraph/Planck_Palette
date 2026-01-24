@@ -7,7 +7,7 @@ export default function MIDDLE()
 	style={{backgroundColor:"#00FF00"}}>
 		<CANVAS
 		canvas_height={32}
-		canvas_width={20}
+		canvas_width={32}
 		/>
 	</div>
 }

@@ -3,8 +3,9 @@ import "./main.css"
 
 // https://youtu.be/cjIswDCKgu0?si=Dwmw63-HxAauQOpm
 
-// https://www.geeksforgeeks.org/reactjs/
-// how-to-debounce-or-throttle-input-changes-in-react/
+/*
+https://www.geeksforgeeks.org/reactjs/how-to-debounce-or-throttle-input-changes-in-react/
+*/
 
 export default function MOUSEMOVEMENT_CSS(){
 	const [SS_Mouse, setSS_Mouse] = useState<[number, number]>([0,0]);

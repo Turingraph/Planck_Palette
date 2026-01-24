@@ -32,15 +32,20 @@ export type t_paint_state<k extends keyof t_canvas_grid> = {
 	key:k
 }
 
-export type t_paint_1_grid<k extends keyof t_canvas_grid> = 
+export type t_paint_area<k extends keyof t_canvas_grid> = 
 t_paint_state<k> & {grid:number}
 
+export type t_paint_grid<k extends keyof t_canvas_grid> = 
+t_paint_state<k> & {grid:number, size:number}
+
 export type t_paint_grids<k extends keyof t_canvas_grid> = 
-t_paint_1_grid<k> & {size:number}
+t_paint_state<k> & {grids:number[], size:number}
 
 export type t_paint_shape<k extends keyof t_canvas_grid> = 
-t_paint_grids<k> & {grid_2:number}
+t_paint_state<k> & {grid_1:number, grid_2:number, size:number}
 
-export type t_paint_helper<k extends keyof t_canvas_grid> = Omit<t_paint_grids<k>, "key">
-export type t_paint_fixed_helper<k extends keyof t_canvas_grid> = Omit<t_paint_grids<k>, keyof t_paint_state<k>>
+/*
+export type t_paint_helper<k extends keyof t_canvas_grid> = Omit<t_paint_grid<k>, "key">
+export type t_paint_fixed_helper<k extends keyof t_canvas_grid> = Omit<t_paint_grid<k>, keyof t_paint_state<k>>
 export type t_paint_helper_shape<k extends keyof t_canvas_grid> = Omit<t_paint_shape<k>, "key">
+*/

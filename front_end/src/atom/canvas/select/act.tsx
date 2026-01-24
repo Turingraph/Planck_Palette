@@ -16,10 +16,5 @@ export default function act_canvas_select(
 			update_arr,
 			action
 		)
-	if (action.type === "SELECT_HOVER_MIRROR")
-		update_arr = p.paint_point_mirror(
-			update_arr,
-			action
-		)
 	return update_arr
 }

@@ -1,10 +1,10 @@
-import { t_canvas, t_canvas_grid, t_paint_1_grid, t_paint_grids } from "./type"
+import { t_canvas, t_canvas_grid, t_paint_area, t_paint_grid } from "./type"
 import { flip_index_x, inside_box_x, inside_box_y } from "./utils"
 
 export function paint_1_grid<
 	k extends keyof t_canvas_grid>(
 	arr:t_canvas,
-	input:t_paint_1_grid<k>
+	input:t_paint_area<k>
 ){
 	arr.arr[input.grid][input.key] = input.state
 	return arr
@@ -13,7 +13,7 @@ export function paint_1_grid<
 export function paint_brush<
 	k extends keyof t_canvas_grid>(
 	arr:t_canvas,
-	input:t_paint_grids<k>,
+	input:t_paint_grid<k>,
 	mode:"UP"|"DOWN"|"LEFT"|"RIGHT"|"MIDDLE_X"|"MIDDLE_Y"
 ){
 	const size = input.size
@@ -65,7 +65,7 @@ export function paint_brush<
 export function paint_point<
 	k extends keyof t_canvas_grid>(
 	arr:t_canvas,
-	input:t_paint_grids<k>
+	input:t_paint_grid<k>
 ){
 	const grid = input.grid
 	const size = input.size
@@ -92,7 +92,7 @@ export function paint_point<
 export function paint_point_mirror<
 	k extends keyof t_canvas_grid>(
 	arr:t_canvas,
-	input:t_paint_grids<k>
+	input:t_paint_grid<k>
 ){
 	arr = paint_point(arr, input)
 	arr = paint_point(arr, {...input, grid:flip_index_x(input.grid, arr.width)})

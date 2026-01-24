@@ -12,19 +12,43 @@ export default function act_canvas_draw(
 		width:arr.width
 	} as t_canvas
 	if (action.type === "DRAW_ERASER")
-		update_arr = p.paint_point(
-			update_arr,
-			{...action, state:undefined, key:"rgb"}
-		)
+	{
+		const grids = action.grids
+		let i = 0
+		while (i < grids.length)
+		{
+			update_arr = p.paint_point(
+				update_arr,
+				{...action, grid:grids[i], state:undefined}
+			)
+			i += 1;
+		}
+	}
 	if (action.type === "DRAW_PEN")
-		update_arr = p.paint_point(
-			update_arr,
-			action
-		)
+	{
+		const grids = action.grids
+		let i = 0
+		while (i < grids.length)
+		{
+			update_arr = p.paint_point(
+				update_arr,
+				{...action, grid:grids[i]}
+			)
+			i += 1;
+		}
+	}
 	if (action.type === "DRAW_MIRROR")
-		update_arr = p.paint_point_mirror(
-			update_arr,
-			action
-		)
+	{
+		const grids = action.grids
+		let i = 0
+		while (i < grids.length)
+		{
+			update_arr = p.paint_point_mirror(
+				update_arr,
+				{...action, grid:grids[i]}
+			)
+			i += 1;
+		}
+	}
 	return update_arr
 }
