@@ -7,7 +7,6 @@ import { t_paint_state } from "../../atom/canvas/utils/type"
 import { init_canvas } from "../../atom/canvas/utils/utils"
 import * as a from "../../atom/type/alias"
 import { GLOBAL_CONTEXT_USE_STATE } from "../../molecule/hook/global_context"
-import { RefThrottle } from "../../molecule/hook/Throttle"
 import style from "./canvas.module.css"
 
 function default_grid_color(rgb:undefined|string, index:number, width:number)
@@ -72,15 +71,36 @@ export default function CANVAS({
 	const PixelSize = useContext(GLOBAL_CONTEXT_USE_STATE).pixel_size.ss
 	const [SS_PixelSize, setSS_PixelSize] = useState<number>(PixelSize)
 	const Ref_MouseDown = useRef<boolean>(false)
+	const [SS_MouseDown, setSS_MouseDown] = useState<boolean>(false)
 	const [SS_Canvas, setSS_Canvas] = useReducer(act_canvas, init_canvas(canvas_height, canvas_width))
-	const Ref_Time = useRef(0)
-	const Ref_GridStateArr = useRef<number[]|undefined>(undefined)
+	const Ref_GridStateArr = useRef<Set<number>>(new Set([]))
 	useEffect(()=>{
 		if (SS_ToolMode > 3 && SS_PixelSize !== 1)
 			setSS_PixelSize(1)
 		else if (SS_ToolMode <= 3 && SS_PixelSize !== PixelSize)
 			setSS_PixelSize(PixelSize)
 	}, [PixelSize, SS_PixelSize, SS_ToolMode])
+	useEffect(()=>{
+		const id = setInterval(() => {
+			on_click_paint_pen(
+					SS_ToolMode, 
+					{state:SS_NewRGB, key:"rgb" as "rgb", size:SS_PixelSize},
+					[...Ref_GridStateArr.current],
+					setSS_Canvas
+				)
+			Ref_GridStateArr.current = new Set([])
+		}, 100)
+		return () => clearInterval(id)
+	}, [SS_ToolMode, SS_NewRGB, SS_PixelSize])
+	useEffect(()=>{
+		if (SS_MouseDown === true &&
+			[0, 3].includes(SS_ToolMode) && 
+			is_arr_has(SS_RGBArr, SS_NewRGB, "rgb") === false)
+		{
+			setSS_RGBArr({type:"PUSH", input:{id:0, rgb:SS_NewRGB, select:false}})
+			setSS_MouseDown(false)
+		}
+	}, [SS_MouseDown, setSS_MouseDown, SS_ToolMode, SS_RGBArr, setSS_RGBArr, SS_NewRGB])
 	return <div
 		className={`${style.canvas} no_ghost_drag`}
 		style ={{
@@ -95,10 +115,14 @@ export default function CANVAS({
 			draggable={false}
 			onMouseEnter={()=>{on_hover_grid(SS_PixelSize, true , index, setSS_Canvas)}}
 			onMouseLeave={()=>{on_hover_grid(SS_PixelSize, false, index, setSS_Canvas)}}
-			onMouseDown={()=>{Ref_MouseDown.current = true}}
+			onMouseDown={()=>{
+				Ref_MouseDown.current = true
+				setSS_MouseDown(true)
+			}}
 			onMouseUp={()=>{
 				Ref_MouseDown.current = false
-				Ref_GridStateArr.current = []
+				setSS_MouseDown(false)
+				Ref_GridStateArr.current = new Set([])
 			}}
 			onClick={()=>{
 				on_click_paint_pen(
@@ -107,29 +131,14 @@ export default function CANVAS({
 					[index],
 					setSS_Canvas
 				)
-				if ([0, 3].includes(SS_ToolMode) && 
-					is_arr_has(SS_RGBArr, SS_NewRGB, "rgb") === false)
-					setSS_RGBArr({type:"PUSH", input:{id:0, rgb:SS_NewRGB, select:false}})
+				setSS_MouseDown(true)
 				if (SS_ToolMode === 10 && item.rgb !== undefined)
 					setSS_NewRGB(item.rgb)
 			}}
 			onMouseMove={()=>{
-			if (Ref_MouseDown.current === true)
-			{
-				if (!Ref_GridStateArr.current)
-					Ref_GridStateArr.current = []
-				Ref_GridStateArr.current.push(index)
-				RefThrottle(Ref_Time, Ref_GridStateArr, 100,
-					((input:number[])=>{
-						on_click_paint_pen(
-							SS_ToolMode, 
-							{state:SS_NewRGB, key:"rgb" as "rgb", size:SS_PixelSize},
-							input,
-							setSS_Canvas
-						)
-					}) as a.t_func_x<number[]>)
-			}
-		}}
+				if (Ref_MouseDown.current === true)
+					Ref_GridStateArr.current.add(index)
+			}}
 			style={{
 				backgroundColor:default_grid_color(
 				item.plan_rgb ? item.plan_rgb : item.rgb, index, SS_Canvas.width),
