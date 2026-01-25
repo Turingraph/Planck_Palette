@@ -1,4 +1,4 @@
-import { t_paint_grid, t_paint_grids, t_paint_shape } from "../utils/type"
+import { t_paint_area, t_paint_grids, t_paint_shape } from "../utils/type"
 
 export const CANVAS_ACT_DRAW = [
 	"DRAW_PEN",			// OK UI
@@ -16,5 +16,5 @@ export type t_act_canvas_draw = (
 ) | (
 	t_paint_shape<"rgb"> & {type:"DRAW_LINE"|"DRAW_CIRCLE"|"DRAW_RECTANGLE"}
 ) | (
-	t_paint_grid<"rgb"> & {type:"DRAW_BACKET"|"DRAW_REPLACE_RGB"}
+	t_paint_area<"rgb"> & {type:"DRAW_BACKET"|"DRAW_REPLACE_RGB"}
 )

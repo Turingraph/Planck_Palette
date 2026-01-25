@@ -17,7 +17,7 @@ plan_rgb is used when
 export type t_canvas_grid = {
 	select:boolean,
 	rgb:string|undefined,
-	plan_rgb:string|undefined
+	sketch_rgb:string|undefined
 }
 
 export type t_canvas = {

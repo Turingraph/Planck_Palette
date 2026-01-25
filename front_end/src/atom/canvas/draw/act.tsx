@@ -50,5 +50,12 @@ export default function act_canvas_draw(
 			i += 1;
 		}
 	}
+	if (action.type === "DRAW_RECTANGLE")
+	{
+		update_arr = p.paint_rectangle(
+			update_arr,
+			action
+		)
+	}
 	return update_arr
 }

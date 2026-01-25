@@ -1,4 +1,4 @@
-import { t_canvas, t_canvas_grid, t_paint_area, t_paint_grid } from "./type"
+import { t_canvas, t_canvas_grid, t_paint_area, t_paint_grid, t_paint_shape } from "./type"
 import { flip_index_x, inside_box_x, inside_box_y } from "./utils"
 
 export function paint_1_grid<
@@ -97,6 +97,50 @@ export function paint_point_mirror<
 	arr = paint_point(arr, input)
 	arr = paint_point(arr, {...input, grid:flip_index_x(input.grid, arr.width)})
 	return arr
+}
+
+export function paint_rectangle<
+	k extends keyof t_canvas_grid>(
+	arr:t_canvas,
+	input:t_paint_shape<k>
+){
+	const {
+		"grid_1": omit_1, 
+		"grid_2": omit_2, 
+		...arg } = input;
+	const size = input.size
+	const g1 = input.grid_1 <= input.grid_2 ? input.grid_1 : input.grid_2
+	const g2 = input.grid_1 <= input.grid_2 ? input.grid_2 : input.grid_1
+	const w = arr.width
+	const u = Math.floor(g1/w)
+	const d = Math.floor(g2/w)
+	const l = g1 % w
+	const r = g2 % w
+	let i = u
+	while (i <= d)
+	{
+		if (i < size + u || i > d - size)
+		{
+			let j = l
+			while (j <= r)
+			{
+				// https://stackoverflow.com/questions/43011742/
+				// how-to-omit-specific-properties-from-an-object-in-javascript
+				const {
+					"size": omit_3, 
+					...rest } = arg;
+				arr = paint_1_grid(arr, {...rest, grid:i*w + j})
+				j += 1
+			}
+		}
+		else
+		{
+			arr = paint_brush(arr, {...arg, grid: i*w + l}, "RIGHT")
+			arr = paint_brush(arr, {...arg, grid: i*w + r}, "LEFT")
+		}
+		i += 1
+	}
+	return (arr)
 }
 
 /*

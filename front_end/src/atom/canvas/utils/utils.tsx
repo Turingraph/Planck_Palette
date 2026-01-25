@@ -61,7 +61,7 @@ export function init_canvas(height:number, width:number){
 	{
 		output.push({
 				rgb:undefined,
-				plan_rgb:undefined,
+				sketch_rgb:undefined,
 				select:false
 			})
 		i += 1
