@@ -20,3 +20,20 @@ export function scale_vector(v:number[], scale:number)
 	}
 	return v
 }
+
+// export function dot_product(v:number[], u:number[])
+// {
+// 	let i = 0
+// 	let y = 0
+// 	while (i < v.length && i < u.length)
+// 	{
+// 		y += v[i]*u[i]
+// 		i += 1
+// 	}
+// 	return y
+// }
+
+// export function pythagoras_distance(v:number[])
+// {
+// 	return Math.sqrt(dot_product(v, v))
+// }
