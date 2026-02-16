@@ -6,6 +6,28 @@ import * as a from "../../atom/type/alias"
 import { f_throttle } from "../../molecule/hook/Throttle"
 import { CONTEXT_CANVAS } from "../../molecule/hook/context"
 
+const canvas_config = {
+	cssOnly: true,
+	defaultCursor:"default",
+	// https://stackoverflow.com/questions/50470313/
+	// removing-highlighting-blue-rectangle-for-selection-in-fabric-js
+	selection:false
+}
+
+const square_config = {
+	fill:"#FFFFFF00",
+	strokeWidth:0,
+	selectable: false,
+	cursor:'crosshair',
+}
+
+const group_config = {
+	subTargetCheck: true,
+	selectable: false,
+	lockMovementX: true,
+	lockMovementY: true,
+}
+
 function default_grid_color(rgb:undefined|string, index:number, width:number)
 {
 	if (rgb)
@@ -41,15 +63,10 @@ export default function CANVAS_BASIC({
 	// const pixel_size = useContext(CONTEXT_USE_STATE_GLOBAL).pixel_size.ss
 	useEffect(()=>{
 			const init_canvas = new fc.Canvas(Ref_Canvas.current,
-			{
-				width:  canvas.h,
-				height: canvas.w,
-				cssOnly: true,
-				defaultCursor:"default",
-				// https://stackoverflow.com/questions/50470313/
-				// removing-highlighting-blue-rectangle-for-selection-in-fabric-js
-				selection:false
-			})
+			{...{
+				width:  canvas.w,
+				height: canvas.h,
+			},...canvas_config})
 			init_canvas.backgroundColor = "#f66"
 			const width = all_grids.w
 			const height = all_grids.h
@@ -71,24 +88,12 @@ export default function CANVAS_BASIC({
 					{ x: grid.w * (left + 1) + border.w, y: grid.h * (up + 1) + border.h},
 					{ x: grid.w * (left + 0) + border.w, y: grid.h * (up + 1) + border.h},
 				]
-				const square_config = {
-					fill:"#FFFFFF00",
-					strokeWidth:0,
-					selectable: false,
-					cursor:'crosshair',
-				}
 				group.push(new fc.Polyline(position,{...square_config, ...{fill:color}}))
 				group_hover.push(new fc.Polyline(position,square_config))
 				i += 1
 			}
 			// https://www.geeksforgeeks.org/javascript/
 			// fabric-js-polygon-lockmovementx-property/
-			const group_config = {
-				subTargetCheck: true,
-				selectable: false,
-				lockMovementX: true,
-				lockMovementY: true,
-			}
 			init_canvas.add(new fc.Group(group, group_config))
 			init_canvas.add(new fc.Group(group_hover, group_config))
 			function mouse_update_grid(e:any, func:a.t_func_x<number>)
@@ -115,6 +120,13 @@ export default function CANVAS_BASIC({
 					init_canvas.requestRenderAll()
 				}
 			}
+			function do_not_hover()
+			{
+				if (Ref_Hover.current)
+					update_grids(
+						get_point_grids(all_grids, {grid:Ref_Hover.current, size:pixel_size}),
+						group_hover, "#FFFFFF00")
+			}
 			init_canvas.on({
 				// https://stackoverflow.com/questions/41848370/
 				// fabricjs-change-cursor-for-every-object
@@ -124,9 +136,7 @@ export default function CANVAS_BASIC({
 				},
 				"mouse:out":()=>{
 					if (Ref_Hover.current !== undefined){
-						update_grids(
-							get_point_grids(all_grids, {grid:Ref_Hover.current, size:pixel_size}),
-							group_hover, "#FFFFFF00")
+						do_not_hover()
 						if (Ref_MouseDown.current === true && f_mouse_down.target === "HOVER")
 							f_mouse_down.func({grid:Ref_Hover.current, rgb:undefined, size:pixel_size, target:group_hover})		
 						Ref_MouseDown.current = false
@@ -136,6 +146,7 @@ export default function CANVAS_BASIC({
 				},
 				"mouse:down":(e:any)=>{
 					Ref_MouseDown.current = true
+					do_not_hover()
 					mouse_update_grid(e, ((input:number)=>{
 						f_on_click.func({grid:input, size:pixel_size, rgb:pixel_rgb,
 							target:f_on_click.target === "HOVER" ? group_hover : group})
@@ -152,10 +163,7 @@ export default function CANVAS_BASIC({
 				"mouse:move":(e:any)=>{
 					f_throttle(Ref_Time, 10, (()=>{
 					mouse_update_grid(e,((input:number)=>{
-						if (Ref_Hover.current)
-							update_grids(
-								get_point_grids(all_grids, {grid:Ref_Hover.current, size:pixel_size}),
-								group_hover, "#FFFFFF00")
+						do_not_hover()
 						if (Ref_MouseDown.current === false)
 							update_grids(
 								get_point_grids(all_grids, {grid:input, size:pixel_size}),
