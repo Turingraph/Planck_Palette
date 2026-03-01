@@ -1,10 +1,10 @@
 import * as fc from "fabric"
 import { useContext, useEffect, useRef } from "react"
-import { get_point_grids, update_grids } from "./paint"
-import { t_canvas_mouse_down, t_canvas_on_click, t_dim, t_practical_shape } from "./type"
 import * as a from "../../atom/type/alias"
 import { f_throttle } from "../../molecule/hook/Throttle"
 import { CONTEXT_CANVAS } from "../../molecule/hook/context"
+import { draw_straight_line_freely_in_canvas, get_point_grids, update_grids } from "./paint"
+import { t_canvas_mouse_down, t_canvas_on_click, t_dim, t_practical_shape } from "./type"
 
 const canvas_config = {
 	cssOnly: true,
@@ -21,6 +21,8 @@ const square_config = {
 	cursor:'crosshair',
 }
 
+// https://www.geeksforgeeks.org/javascript/
+// fabric-js-polygon-lockmovementx-property/
 const group_config = {
 	subTargetCheck: true,
 	selectable: false,
@@ -58,11 +60,10 @@ export default function CANVAS_BASIC({
 	const {grid, all_grids, canvas} = useContext(CONTEXT_CANVAS)
 	const Ref_Time = useRef<number>(0)
 	const Ref_Canvas = useRef<null|any>(null)
-	const Ref_CurrentGrid = useRef<undefined|number>(undefined)
+	const Ref_CurrentGrid = useRef<number>(0)
 	const Ref_PrevGrid = useRef<undefined|number>(undefined)
 	const Ref_FirstGrid = useRef<undefined|number>(undefined)
 	const Ref_MouseDown = useRef<boolean>(false)
-	// const pixel_size = useContext(CONTEXT_USE_STATE_GLOBAL).pixel_size.ss
 	useEffect(()=>{
 			const init_canvas = new fc.Canvas(Ref_Canvas.current,
 			{...{
@@ -94,11 +95,9 @@ export default function CANVAS_BASIC({
 				group_hover.push(new fc.Polyline(position,square_config))
 				i += 1
 			}
-			// https://www.geeksforgeeks.org/javascript/
-			// fabric-js-polygon-lockmovementx-property/
 			init_canvas.add(new fc.Group(group, group_config))
 			init_canvas.add(new fc.Group(group_hover, group_config))
-			function mouse_update_grid(e:any, func:a.t_func_x<number>)
+			function mouse_update_grid(e:any, func:a.t_func_x<number>, include_edge:boolean = false)
 			{
 				const affine_constant = {
 					w:Ref_Canvas.current.getBoundingClientRect().left, 
@@ -121,14 +120,50 @@ export default function CANVAS_BASIC({
 					Ref_CurrentGrid.current = hover
 					init_canvas.requestRenderAll()
 				}
+				else if (Ref_MouseDown.current === true && include_edge === true)
+				{
+					const mouse_position_index = {
+						w:Math.floor(mouse_position.w/grid.w),
+						h:Math.floor(mouse_position.h/grid.h),
+					}
+					if (f_mouse_down.scale === "GLOBAL" && Ref_FirstGrid.current && Ref_PrevGrid.current)
+					{
+						f_mouse_down.func({size:pixel_size, rgb:undefined, target:group_hover,
+							grid_1:Ref_FirstGrid.current, grid_2:Ref_PrevGrid.current})
+					}
+					const first_grid_index = Ref_FirstGrid.current ? {
+						w:Ref_FirstGrid.current % width,
+						h:Math.floor(Ref_FirstGrid.current/width)
+					} : undefined
+					const prev_grid_index = Ref_PrevGrid.current ? {
+						w:Ref_PrevGrid.current % width,
+						h:Math.floor(Ref_PrevGrid.current/width)
+					} : undefined
+					if (first_grid_index !== undefined && f_mouse_down.scale === "GLOBAL" && Ref_FirstGrid.current)
+					{
+						const edge_girds = draw_straight_line_freely_in_canvas(all_grids, first_grid_index, mouse_position_index)
+						const edge_current = edge_girds[0] === Ref_FirstGrid.current ? edge_girds[edge_girds.length - 1] : edge_girds[0]
+						f_mouse_down.func({size:pixel_size, rgb:pixel_rgb, target:group_hover,
+							grid_1:Ref_FirstGrid.current, grid_2:edge_current})
+						Ref_PrevGrid.current = Ref_CurrentGrid.current
+						Ref_CurrentGrid.current = edge_current
+					}
+					if (prev_grid_index !== undefined && f_mouse_down.scale === "LOCAL" && Ref_PrevGrid.current)
+					{
+						const edge_girds = draw_straight_line_freely_in_canvas(all_grids, prev_grid_index, mouse_position_index)
+						const edge_current = edge_girds[0] === Ref_PrevGrid.current ? edge_girds[edge_girds.length - 1] : edge_girds[0]
+						f_mouse_down.func({size:pixel_size, rgb:pixel_rgb, target:group,
+							grid_1:Ref_PrevGrid.current, grid_2:edge_current})
+						Ref_PrevGrid.current = undefined
+						Ref_MouseDown.current = false
+					}
+					init_canvas.requestRenderAll()
+				}
 			}
 			function do_not_hover()
 			{
-				let grid = 0
-				if (Ref_CurrentGrid.current)
-					grid = Ref_CurrentGrid.current
 				update_grids(
-					get_point_grids(all_grids, {grid:grid, size:pixel_size}),
+					get_point_grids(all_grids, {grid:Ref_CurrentGrid.current, size:pixel_size}),
 					group_hover, "#FFFFFF00")
 			}
 			init_canvas.on({
@@ -140,11 +175,7 @@ export default function CANVAS_BASIC({
 				},
 				"mouse:out":()=>{
 					if (Ref_CurrentGrid.current !== undefined){
-						do_not_hover()		
-						// Ref_MouseDown.current = false
-						// Ref_CurrentGrid.current = undefined
-						// Ref_PrevGrid.current = undefined
-						// Ref_FirstGrid.current = undefined
+						do_not_hover()
 						init_canvas.requestRenderAll()
 					}
 				},
@@ -183,9 +214,6 @@ export default function CANVAS_BASIC({
 								group_hover, "#FFFFFF55")
 						else
 						{
-							// console.log("-----------------------------------------------------------")
-							// console.log("Ref_CurrentGrid.current", Ref_CurrentGrid.current)
-							// console.log("Ref_PrevGrid.current", Ref_PrevGrid.current)
 							if (f_mouse_down.scale === "GLOBAL" && Ref_FirstGrid.current && Ref_PrevGrid.current)
 								f_mouse_down.func({size:pixel_size, rgb:undefined, target:group_hover,
 									grid_1:Ref_FirstGrid.current, grid_2:Ref_PrevGrid.current})
@@ -197,7 +225,7 @@ export default function CANVAS_BASIC({
 									grid_1:Ref_PrevGrid.current, grid_2:Ref_CurrentGrid.current})
 							Ref_PrevGrid.current = Ref_CurrentGrid.current
 						}
-					}) as a.t_func_x<number>)
+					}) as a.t_func_x<number>, true)
 					}) as a.t_func)
 				}
 			})
