@@ -50,8 +50,8 @@ const canvas_config = {
 	selection:false
 }
 
-export function create_init_canvas(Ref_Canvas:RefObject<any>, 
-	canvas:t_dim, all_grids:t_dim, grid:t_dim)
+export function create_canvas(Ref_Canvas:RefObject<any>, 
+	canvas:t_dim)
 {
 	const init_canvas = new fc.Canvas(Ref_Canvas.current,
 	{...{
@@ -67,11 +67,13 @@ export function create_init_canvas(Ref_Canvas:RefObject<any>,
 				e.target.hoverCursor = init_canvas.defaultCursor;
 		}
 	})
-	const width = all_grids.w
-	const border = {
+	return init_canvas
+}
+
+export function create_border(canvas:t_dim, all_grids:t_dim, grid:t_dim)
+{
+	return {
 		h:Math.floor((canvas.h - grid.h * all_grids.h)/2),
 		w:Math.floor((canvas.w - grid.w * all_grids.w)/2)
 	} as t_dim
-	return {init_canvas, width, border}
 }
-

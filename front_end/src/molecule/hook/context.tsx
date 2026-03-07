@@ -4,7 +4,7 @@ import { t_rgb_palettes } from "../../atom/arr/type";
 // import { t_use_canvas } from "../../atom/canvas/main";
 // import { init_canvas } from "../../atom/canvas/utils/utils";
 import * as a from "../../atom/type/alias";
-import { t_dim } from "../../atom/canvas/utils/type";
+import { t_canvas_dim } from "../../page/middle/utils/type";
 
 function init_use_state<t>(init:t)
 {
@@ -34,11 +34,8 @@ export const CONTEXT_USE_STATE_GLOBAL = createContext<{
 	rgb_arr:init_use_arr([] as t_rgb_palettes[])
 })
 
-export const CONTEXT_CANVAS = createContext<{
-	grid:t_dim
-	all_grids:t_dim
-	canvas:t_dim
-}>({
+export const CONTEXT_CANVAS = createContext<
+	t_canvas_dim>({
 	grid:{w:25, h:25},
 	all_grids:{w:32,h:32},
 	canvas:{w:800,h:800}
