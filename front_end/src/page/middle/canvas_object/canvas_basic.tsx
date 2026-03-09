@@ -84,15 +84,6 @@ export default function CANVAS_BASIC({
 				((input:{e:any, prev_grid:(number|undefined)})=>{
 					return get_grid_index_inout_canvas(input.e, input.prev_grid)
 				}) as a.t_func_xy<{e:any, prev_grid:(number|undefined)}, number|undefined>,
-				// f_on_click
-				((input:number)=>{
-					f_on_click({
-						grid:input,
-						rgb:pixel_rgb,
-						size:pixel_size,
-						target:group
-					})
-				}) as a.t_func_x<number>,
 				// f_mouse_down
 				((input:{grid_1:number,grid_2:number})=>{
 					if (Ref_MouseDown.current === true)

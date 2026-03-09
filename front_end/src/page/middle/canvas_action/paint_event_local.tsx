@@ -46,7 +46,6 @@ export function event_draw_throttle_local(
 	f_get_grid_index:a.t_func_xy<{
 		e:any, prev_grid:(number|undefined)
 	}, number|undefined>,
-	f_on_click:a.t_func_x<number>,
 	f_mouse_down:a.t_func_x<{grid_1:number, grid_2:number}>,
 	Ref_Time:{current:number}
 )
@@ -57,7 +56,6 @@ export function event_draw_throttle_local(
 		main_canvas, 
 		// func
 		((input:number)=>{
-			// f_on_click(input)
 			Ref_PrevGrid.current = input
 		}) as a.t_func_x<number>, 
 		// f_get_grid_index
