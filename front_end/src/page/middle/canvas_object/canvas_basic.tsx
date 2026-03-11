@@ -4,9 +4,10 @@ import * as a from "../../../atom/type/alias"
 import { CONTEXT_CANVAS, CONTEXT_USE_STATE_GLOBAL } from "../../../molecule/hook/context"
 import { create_border, create_canvas, create_grids } from "../canvas_action/create_canvas"
 import { do_hover, event_hover, event_mouse_down } from "../canvas_action/hover_event"
-import { event_draw_throttle_local, event_on_click_grid } from "../canvas_action/paint_event_local"
+import { event_draw_throttle_local, event_on_click_grid, event_draw_throttle_global } from "../canvas_action/paint_event"
 import { get_edge_index, is_mouse_in_canvas, mouse_to_ith_grid } from "../utils/calculate_hover_position"
 import { t_canvas_on_click, t_practical_shape } from "../utils/type"
+import { draw_thicker_straight_line, update_grids } from "../draw/draw_fc_canvas"
 
 // https://www.geeksforgeeks.org/javascript/
 // fabric-js-polygon-lockmovementx-property/
@@ -76,7 +77,8 @@ export default function CANVAS_BASIC({
 				((input:any)=>{
 					return get_grid_index_inout_canvas(input, undefined)
 				}) as a.t_func_xy<any, number|undefined>,
-			)				
+			)
+			/*
 			event_draw_throttle_local(
 				// main_canvas
 				main_canvas,
@@ -95,6 +97,27 @@ export default function CANVAS_BASIC({
 							target:group
 						})
 				}) as a.t_func_x<{grid_1:number,grid_2:number}>,
+				// Ref_Time
+				Ref_TimePaint
+			)			
+			*/
+			const global_grid_config = {
+				rgb:pixel_rgb,
+				target:group_hover,
+				size:pixel_size
+			}
+			event_draw_throttle_global(
+				// main_canvas
+				main_canvas,
+				// f_get_grid_index
+				((input:{e:any, prev_grid:(number|undefined)})=>{
+					return get_grid_index_inout_canvas(input.e, input.prev_grid)
+				}) as a.t_func_xy<{e:any, prev_grid:(number|undefined)}, number|undefined>,
+				// config
+				global_grid_config,
+				// f_mouse_down
+				f_mouse_down as a.t_func_x<t_practical_shape>,
+				group,
 				// Ref_Time
 				Ref_TimePaint
 			)

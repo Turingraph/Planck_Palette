@@ -60,7 +60,8 @@ export default function CANVAS_CLICK_USER()
 					input.target, pixel_rgb)
 			}) as a.t_func_x<t_rgb_point & {target:fc.Polyline[]}>
 		}
-		f_mouse_down={((input)=>{
+		f_mouse_down={((input:t_practical_shape)=>{
+			// console.log("input.rgb", input.rgb)
 			update_grids(
 				draw_thicker_straight_line(
 					all_grids,
