@@ -4,7 +4,7 @@ import { t_rgb_palettes } from "../../atom/arr/type";
 // import { t_use_canvas } from "../../atom/canvas/main";
 // import { init_canvas } from "../../atom/canvas/utils/utils";
 import * as a from "../../atom/type/alias";
-import { t_canvas_dim } from "../../page/middle/utils/type";
+import { t_canvas_dim } from "../../organism/canvas/utils/type";
 
 function init_use_state<t>(init:t)
 {

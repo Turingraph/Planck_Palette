@@ -8,7 +8,7 @@ import LAYOUT_SIDEBAR from "../organism/layout/layout_sidebar";
 import LEFT from "./left/main";
 import "./main.css";
 import style from "./main.module.css";
-import MIDDLE from "./middle/main";
+import MIDDLE from "../organism/canvas/main";
 import RIGHT from "./right/main";
 import { ARR_SAVE } from "./utils/arr";
 
