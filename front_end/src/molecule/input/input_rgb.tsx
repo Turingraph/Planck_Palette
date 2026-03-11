@@ -1,4 +1,6 @@
+import { useRef } from "react"
 import * as a from "../../atom/type/alias"
+import { f_throttle } from "../hook/Throttle"
 
 export function INPUT_RGB({
 	new_rgb
@@ -6,11 +8,14 @@ export function INPUT_RGB({
 	new_rgb:a.t_use_state<string>
 })
 {
+	const Ref_Time = useRef<number>(0)
 	return <input 
 		style={{width:"55px"}}
 		type="color" 
 		onChange={e=>{
-			new_rgb.setss(e.target.value)
+			f_throttle(Ref_Time, 200, (()=>{
+				new_rgb.setss(e.target.value)
+			}) as a.t_func)
 		}}
 		value={new_rgb.ss}
 	></input>
