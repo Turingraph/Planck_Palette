@@ -98,21 +98,29 @@ export const ARR_TRANSFORM:t_B_LOGO[] = [
 
 export const ARR_SAVE:t_B_STR[] = [
 	{
-		title:"save as",
+		title:"open project",
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"import image",
+		title:"save project",
+		func:(()=>{}) as a.t_func
+	},
+	{
+		title:"import color palette",
 		func:(()=>{}) as a.t_func
 	},	
 	{
-		title:"export project",
+		title:"export color palette",
 		func:(()=>{}) as a.t_func
 	},	
 	{
 		title:"create new project",
 		func:(()=>{}) as a.t_func
 	},
+	{
+		title:"import image",
+		func:(()=>{}) as a.t_func
+	},	
 ]
 
 const CSS_TEST_DIV = {
