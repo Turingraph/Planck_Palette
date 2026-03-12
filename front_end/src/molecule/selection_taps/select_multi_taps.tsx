@@ -17,14 +17,19 @@ k extends keyof t>({
 	return <SELECT_TAPS
 		class_name={class_name}
 		jsx_select_array={jsx_select_array}
-		f_click_select={((index:number)=>{arr.setss({
+		f_click_select={((index:number)=>{
+			if (index < arr.ss.length)
+				arr.setss({
 					type:"EDIT", 
 					id:arr.ss[index].id,
 					input:{
 						...arr.ss[index],
 						select:arr.ss[index].select === true ? false : true
 					}
-				})}) as a.t_func_x<number>}
-		f_highlight={((index:number)=>{return arr.ss[index].select}) as a.t_func_xy<number,boolean>}
+				})
+			}) as a.t_func_x<number>}
+		f_highlight={((index:number)=>{
+			return index < arr.ss.length ? arr.ss[index].select : false
+		}) as a.t_func_xy<number,boolean>}
 	/>
 }

@@ -23,74 +23,74 @@ import { t_page_with_title } from "../../organism/layout/type";
 
 export const ARR_DRAW:t_B_LOGO[] = [
 	{
-		title:"Pen" as a.t_str_hover,		// 3
+		description:"Pen" as a.t_str_hover,		// 3
 		logo:pen as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Eraser" as a.t_str_hover,	// 3
+		description:"Eraser" as a.t_str_hover,	// 3
 		logo:eraser as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Draw straight Line" as a.t_str_hover, // 2
+		description:"Draw straight Line" as a.t_str_hover, // 2
 		logo:line as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Mittor Pen" as a.t_str_hover,	// 3
+		description:"Mittor Pen" as a.t_str_hover,	// 3
 		logo:mirror_pen as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Bucket" as a.t_str_hover,	// 1
+		description:"Bucket" as a.t_str_hover,	// 1
 		logo:bucket as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Replace selected color with new color" as a.t_str_hover, // 1
+		description:"Replace selected color with new color" as a.t_str_hover, // 1
 		logo:replace_rgb as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Draw rectangle" as a.t_str_hover,	// 2
+		description:"Draw rectangle" as a.t_str_hover,	// 2
 		logo:rectangle as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Draw Circle" as a.t_str_hover,	// 2
+		description:"Draw Circle" as a.t_str_hover,	// 2
 		logo:circle as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Move selected Rectangle area to new area" as a.t_str_hover,
+		description:"Move selected Rectangle area to new area" as a.t_str_hover,
 		logo:rectangle_select as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Crop Canvas" as a.t_str_hover,
+		description:"Crop Canvas" as a.t_str_hover,
 		logo:crop as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Pick rgb color" as a.t_str_hover,	// 0
+		description:"Pick rgb color" as a.t_str_hover,	// 0
 		logo:rgb_picker as a.t_logo,
 		func:(()=>{}) as a.t_func
 	}]
 
 export const ARR_TRANSFORM:t_B_LOGO[] = [
 	{
-		title:"Flip Canvas in left direction" as a.t_str_hover,
+		description:"Flip Canvas in left direction" as a.t_str_hover,
 		logo:flip as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Rotate Canvas" as a.t_str_hover,
+		description:"Rotate Canvas" as a.t_str_hover,
 		logo:rotate as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},
 	{
-		title:"Make Canvas become upside down" as a.t_str_hover,
+		description:"Make Canvas become upside down" as a.t_str_hover,
 		logo:upside_down as a.t_logo,
 		func:(()=>{}) as a.t_func
 	},

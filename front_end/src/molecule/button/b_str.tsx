@@ -1,3 +1,4 @@
+import LONG_STR from "../../atom/str/long_str";
 import STR from "../../atom/str/str";
 import * as a from "../../atom/type/alias";
 
@@ -8,11 +9,12 @@ export type t_B_STR = {
 
 export default function B_STR({
 	title,
-	func
-}:t_B_STR)
+	func,
+	long_str = false
+}:t_B_STR & {long_str?:boolean})
 {
 	return <button onClick={func} className={`tap`}>
-		<STR text={title}/>
+		{long_str === false ? <STR text={title}/> : <LONG_STR text={title}/>}
 	</button>
 }
 

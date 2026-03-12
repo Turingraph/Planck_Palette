@@ -27,7 +27,7 @@ style={{
 		new_rgb={{ss:SS_NewRGB, setss:setSS_NewRGB}}
 		/>,
 		<INPUT_NUMBER 
-		title={"Set pen size" as a.t_str_hover}
+		description={"Set pen size" as a.t_str_hover}
 		use_state={{ss:SS_PixelSize, setss:setSS_PixelSize}}/>
 		],
 		back:undefined
@@ -36,7 +36,7 @@ style={{
 	class_name={"middle_taps_y"}
 	jsx_select_array={ARR_DRAW.map((item, index:number)=>{
 		return <B_LOGO
-		title={item.title}
+		description={item.description}
 		logo={item.logo}
 		func={item.func}
 		/>})}

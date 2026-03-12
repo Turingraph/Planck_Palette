@@ -1,4 +1,4 @@
-import STR from "../../atom/str/str";
+import LONG_STR from "../../atom/str/long_str";
 import * as a from "../../atom/type/alias";
 import style from "./input_number.module.css";
 
@@ -12,20 +12,14 @@ export default function INPUT_STRING({
 	unit?:undefined|string
 })
 {
-	let jsx_title = <></>
-	if (title !== undefined)
-		jsx_title = <STR text={title}/>
-	let jsx_unit = <></>
-	if (unit !== undefined)
-		jsx_unit = <STR text={unit}/>
 	return <div className={`${style.div}`}>
-	{jsx_title}
+	{title !== undefined ? <LONG_STR text={title}/> : <></>}
 	<input 
 	className={`${style.input}`}
 	type="string" 
 	onChange={e=>{
 		use_state.setss(e.target.value)
 	}} value={use_state.ss}/>
-	{jsx_unit}
+	{unit !== undefined ? <LONG_STR text={unit}/> : <></>}
 	</div>
 }

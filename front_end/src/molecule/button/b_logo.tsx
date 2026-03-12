@@ -1,10 +1,10 @@
 import { useState } from "react";
+import STR_HOVER from "../../atom/str/str_hover";
 import * as a from "../../atom/type/alias";
 import style from "./b_logo.module.css";
-import STR_HOVER from "../../atom/str/str_hover";
 
 export type t_B_LOGO = {
-	title?:a.t_str_hover|undefined,
+	description?:a.t_str_hover|undefined,
 	logo:a.t_logo,
 	func:a.t_func,
 	size?:45|20
@@ -12,7 +12,7 @@ export type t_B_LOGO = {
 
 export default function B_LOGO(
 {
-	title = undefined,
+	description = undefined,
 	logo,
 	func,
 	size = 45
@@ -20,9 +20,6 @@ export default function B_LOGO(
 )
 {
 	const [SS_OnMouseEnter, setSS_OnMouseEnter] = useState<boolean>(true);
-	let description = <></>
-	if (title !== undefined)
-		description=<STR_HOVER str_hover={title as string} is_hover={SS_OnMouseEnter}/>
 	return <>
 		<button onClick={func} className={"tap"}
 		style={{
@@ -34,7 +31,7 @@ export default function B_LOGO(
 		>
 			<img src={logo} alt="" className={`${style.img}`}/>
 		</button>
-		{description}
+		{description !== undefined ? <STR_HOVER str_hover={description as string} is_hover={SS_OnMouseEnter}/> : <></>}
 	</>
 }
 

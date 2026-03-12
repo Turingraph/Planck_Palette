@@ -21,10 +21,22 @@ https://youtu.be/0pP3Ao_5AIE?si=QGkMqBb4bEwrIRNK
 	padding:5px; 
 }
 
+.long_str {
+	font-size:15px; 
+	padding:5px; 
+	white-space: nowrap;
+}
+
 /*
 This class locate the child DOM in the center of
 parent DOM.
 */
+
+.invisible_line {
+	width:100%;
+	height: 5px;
+	visibility: hidden;
+}
 
 .center_box {
 	display:flex;
