@@ -1,13 +1,12 @@
 import * as fc from "fabric"
 import { useContext, useEffect, useRef } from "react"
 import * as a from "../../../atom/type/alias"
-import { CONTEXT_CANVAS, CONTEXT_USE_STATE_GLOBAL } from "../../../molecule/hook/context"
 import { create_border, create_canvas, create_grids } from "../canvas_action/create_canvas"
 import { do_hover, event_hover, event_mouse_down } from "../canvas_action/hover_event"
-import { event_draw_throttle_local, event_on_click_grid, event_draw_throttle_global } from "../canvas_action/paint_event"
+import { event_on_click_grid, event_draw_throttle_global } from "../canvas_action/paint_event"
 import { get_edge_index, is_mouse_in_canvas, mouse_to_ith_grid } from "../utils/calculate_hover_position"
 import { t_canvas_on_click, t_practical_shape } from "../utils/type"
-import { draw_thicker_straight_line, update_grids } from "../draw/draw_fc_canvas"
+import { CONTEXT_CANVAS, CX_SS_PAINT_TOOL } from "../utils/context"
 
 // https://www.geeksforgeeks.org/javascript/
 // fabric-js-polygon-lockmovementx-property/
@@ -28,7 +27,7 @@ export default function CANVAS_BASIC({
 	f_mouse_down?:a.t_func_x<t_practical_shape>,
 })
 {
-	const pixel_rgb = useContext(CONTEXT_USE_STATE_GLOBAL).new_rgb.ss
+	const pixel_rgb = useContext(CX_SS_PAINT_TOOL).new_rgb.ss
 	const {grid, all_grids, canvas} = useContext(CONTEXT_CANVAS)
 	const Ref_TimeHover = useRef<number>(0)
 	const Ref_TimePaint = useRef<number>(0)

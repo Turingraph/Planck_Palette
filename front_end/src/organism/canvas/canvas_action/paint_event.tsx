@@ -1,6 +1,6 @@
 import * as fc from "fabric";
 import * as a from "../../../atom/type/alias";
-import { f_throttle } from "../../../molecule/hook/Throttle";
+import { f_throttle } from "../../../molecule/utils/Throttle";
 import { t_practical_config, t_practical_shape } from "../utils/type";
 
 export function event_on_click_grid(

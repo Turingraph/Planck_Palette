@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import * as a from "../../atom/type/alias"
-import { f_throttle } from "../hook/Throttle"
+import { f_throttle } from "../utils/Throttle"
 
 export function INPUT_RGB({
 	new_rgb

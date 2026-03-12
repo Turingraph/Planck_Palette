@@ -1,12 +1,24 @@
-import { CONTEXT_CANVAS } from "../../molecule/hook/context";
-// import CANVAS_BASIC from "./canvas_basic";
 import CANVAS_CLICK_USER from "./canvas_object/canvas_click_user";
-// import MOUSE from "./mouse";
-// import MY_TIME from "./my_time";
+import * as a from "../../atom/type/alias"
+import { CONTEXT_CANVAS, CX_SS_PAINT_TOOL } from "./utils/context";
 
-export default function MIDDLE()
+export default function MIDDLE({
+	new_rgb,
+	pixel_size,
+	draw_mode
+}:{
+	new_rgb:a.t_use_state<string>
+	pixel_size:a.t_use_state<number>
+	draw_mode:a.t_use_state<number>
+})
 {
-	return <div 
+	return <CX_SS_PAINT_TOOL
+		value={{
+			pixel_size:pixel_size,
+			new_rgb:new_rgb,
+			draw_mode:draw_mode
+		}}
+	><div 
 	className="fill center_box" 
 	style={{backgroundColor:"#00FF00"}}>
 		<CONTEXT_CANVAS value={{
@@ -20,7 +32,7 @@ export default function MIDDLE()
 		{/* <MOUSE/> */}
 		{/* <FABRIK/> */}
 		</CONTEXT_CANVAS>
-	</div>
+	</div></CX_SS_PAINT_TOOL>
 }
 
 /*

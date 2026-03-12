@@ -1,7 +1,7 @@
 import * as fc from "fabric";
 import { RefObject } from "react";
 import * as a from "../../../atom/type/alias";
-import { f_throttle } from "../../../molecule/hook/Throttle";
+import { f_throttle } from "../../../molecule/utils/Throttle";
 import { paint_a_point } from "../draw/draw_fc_canvas";
 import { t_dim } from "../utils/type";
 
