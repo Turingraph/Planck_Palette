@@ -10,18 +10,22 @@ import LEFT from "./left/main";
 import "./main.css";
 import style from "./main.module.css";
 import RIGHT from "./right/main";
-import { ARR_SAVE } from "./utils/arr";
+import { ARR_SAVE, header_height } from "./utils/constant";
 import PAINT_TOOLS from "./utils/paint_tools";
+import { rgb_arr_test } from "./utils/test_constant";
 
 export default function MAIN()
 {
 	const [SS_NewRGB, setSS_NewRGB] = useState<string>("#000000")
 	const [SS_DrawMode, setSS_DrawMode] = useState<number>(0)
 	const [SS_PixelSize, setSS_PixelSize] = useState<number>(1)
-	const [SS_RGBArr, setSS_RGBArr] = useReducer(act_arr, [] as t_rgb_palettes[])
+	const [SS_RGBArr, setSS_RGBArr] = useReducer(
+		act_arr, rgb_arr_test.map((item,index)=>{
+			return {id:index, select:false, rgb:item}
+		}) as t_rgb_palettes[])
 	return <div className={`${style.main}`}>
 	<LAYOUT_HEADER
-		header_height={"40px"}
+		header_height={header_height}
 		header_class_name={"left_taps"}
 		tap_lists={ARR_SAVE}
 		jsx_body={<LAYOUT_SIDEBAR

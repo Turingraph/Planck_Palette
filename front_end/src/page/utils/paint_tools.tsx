@@ -4,7 +4,7 @@ import B_LOGO from "../../molecule/button/b_logo"
 import INPUT_NUMBER from "../../molecule/input/input_number"
 import { INPUT_RGB } from "../../molecule/input/input_rgb"
 import SELECT_ONE_TAP from "../../molecule/selection_taps/select_one_tap"
-import { ARR_DRAW } from "./arr"
+import { ARR_DRAW } from "./constant"
 
 export default function PAINT_TOOLS({
 	new_rgb,

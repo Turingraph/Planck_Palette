@@ -1,4 +1,4 @@
-import { JSX, useContext, useEffect, useState } from "react"
+import { JSX, useContext, useEffect, useRef, useState } from "react"
 import add_logo from "../../../asset/items/add.png"
 import * as a from "../../../atom/type/alias"
 import B_LOGO from "../../../molecule/button/b_logo"
@@ -24,12 +24,16 @@ export default function RGB_TABLE({
 {
 	const {ss:SS_NewRGB, setss:setSS_NewRGB} = useContext(CX_SS_PALETTE).new_rgb
 	const [SS_SelectRGB, setSS_SelectRGB] = useState<number>(0)
+	const Ref_Table = useRef<any>(null)
+	const [SS_TableHeight, setSS_TableHeight] = useState<undefined|number>(undefined)
 	const {
 		Ref_DragOldIndex	,
 		Ref_DragNewIndex	,
 		SS_DragOldIndex		,
 		setSS_DragOldIndex } = useDragArr()
 	useEffect(()=>{
+		if (Ref_Table.current)
+			setSS_TableHeight(Ref_Table.current?.getBoundingClientRect().y)
 		if (editor_or_picker !== undefined && rgb_arr.ss.length > 0 && SS_SelectRGB < rgb_arr.ss.length)
 			setSS_NewRGB(rgb_arr.ss[SS_SelectRGB].rgb)
 	}, [SS_SelectRGB, rgb_arr.ss, setSS_NewRGB, editor_or_picker])
@@ -74,6 +78,9 @@ export default function RGB_TABLE({
 	use_select_item={undefined}
 	/>
 	<hr className="invisible_line"/>
+	<div ref={Ref_Table} className="fill" style={{
+		height:"calc(100vh - " + (SS_TableHeight ? SS_TableHeight : "0") + "px - 10px)", 
+		overflowY: "auto"}}>
 	{/*** RGB_PICKER ***/}
 	{editor_or_picker !== undefined ? 
 	<SELECT_ONE_TAP
@@ -89,6 +96,6 @@ export default function RGB_TABLE({
 			]}
 		arr={rgb_arr}
 	/>
-	}
+	}</div>
 	</CONTEXT_DRAG>
 }

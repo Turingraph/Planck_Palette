@@ -142,3 +142,5 @@ export const ARR_EDITOR_MODES:t_page_with_title[] = [
 		title:"Simulation"
 	},
 ]
+
+export const header_height = "40px"
