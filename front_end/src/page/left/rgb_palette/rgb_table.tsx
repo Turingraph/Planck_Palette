@@ -25,7 +25,9 @@ export default function RGB_TABLE({
 			setSS_NewRGB(SS_RGBArr[SS_SelectRGB].rgb)
 	}, [SS_SelectRGB, SS_RGBArr, setSS_NewRGB, editor_or_picker])
 	const rgb_palettes_grids = SS_RGBArr.map((item, index)=>{
-		return <B_RGB_GRID rgb={item.rgb} key={index}/>
+		return <B_RGB_GRID rgb={item.rgb} key={index} 
+		f_delete={(editor_or_picker !== undefined ? undefined : ()=>{
+			setSS_RGBArr({type:"DELETE", id:SS_RGBArr[index].id})}) as a.t_func}/>
 	})
 	const input_string = editor_or_picker === undefined ? [] : [
 		<INPUT_STRING
