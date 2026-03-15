@@ -8,26 +8,29 @@ import { SELECT_MULTI_TAPS } from "../../../molecule/selection_taps/select_multi
 import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap"
 import { B_RGB_PALETTE } from "../../../organism/button/b_rgb_palette"
 import { CX_SS_PALETTE } from "./context"
+import { t_use_arr } from "../../../atom/arr/act"
+import { t_rgb_palettes } from "../../../atom/arr/type"
 
 export default function RGB_TABLE({
 	editor_or_picker,
-	f_clicks
+	f_clicks,
+	rgb_arr
 }:{
 	editor_or_picker:undefined|a.t_use_state<string>
 	f_clicks:t_B_STR[]
+	rgb_arr:t_use_arr<t_rgb_palettes, keyof t_rgb_palettes>
 })
 {
-	const {ss: SS_RGBArr, setss: setSS_RGBArr} = useContext(CX_SS_PALETTE).rgb_arr
 	const {ss:SS_NewRGB, setss:setSS_NewRGB} = useContext(CX_SS_PALETTE).new_rgb
 	const [SS_SelectRGB, setSS_SelectRGB] = useState<number>(0)
 	useEffect(()=>{
-		if (editor_or_picker !== undefined)
-			setSS_NewRGB(SS_RGBArr[SS_SelectRGB].rgb)
-	}, [SS_SelectRGB, SS_RGBArr, setSS_NewRGB, editor_or_picker])
-	const rgb_palettes_grids = SS_RGBArr.map((item, index)=>{
+		if (editor_or_picker !== undefined && rgb_arr.ss.length > 0 && SS_SelectRGB < rgb_arr.ss.length)
+			setSS_NewRGB(rgb_arr.ss[SS_SelectRGB].rgb)
+	}, [SS_SelectRGB, rgb_arr.ss, setSS_NewRGB, editor_or_picker])
+	const rgb_palettes_grids = rgb_arr.ss.map((item, index)=>{
 		return <B_RGB_PALETTE rgb={item.rgb} key={index} 
 		f_delete={(editor_or_picker !== undefined ? undefined : ()=>{
-			setSS_RGBArr({type:"DELETE", id:SS_RGBArr[index].id})}) as a.t_func}/>
+			rgb_arr.setss({type:"DELETE", id:rgb_arr.ss[index].id})}) as a.t_func}/>
 	})
 	const input_string = editor_or_picker === undefined ? [] : [
 		<INPUT_STRING
@@ -41,7 +44,7 @@ export default function RGB_TABLE({
 	const b_add_new_rgb = <B_LOGO
 		logo={add_logo as a.t_logo}
 		func={(()=>{
-			setSS_RGBArr({
+			rgb_arr.setss({
 				type:"PUSH",
 				input:{
 					rgb:SS_NewRGB,
@@ -70,7 +73,7 @@ export default function RGB_TABLE({
 			...rgb_palettes_grids, 
 			b_add_new_rgb
 			]}
-		arr={{ss: SS_RGBArr, setss: setSS_RGBArr}}
+		arr={rgb_arr}
 	/>
 	}
 	</>
