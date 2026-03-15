@@ -1,12 +1,12 @@
 import { JSX, useContext, useEffect, useState } from "react"
+import add_logo from "../../../asset/items/add.png"
 import * as a from "../../../atom/type/alias"
 import B_LOGO from "../../../molecule/button/b_logo"
 import B_STR, { t_B_STR } from "../../../molecule/button/b_str"
 import INPUT_STRING from "../../../molecule/input/input_string"
 import { SELECT_MULTI_TAPS } from "../../../molecule/selection_taps/select_multi_taps"
 import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap"
-import { B_RGB_GRID } from "../../../organism/button/b_rgb_grid"
-import add_logo from "../../../asset/items/add.png"
+import { B_RGB_PALETTE } from "../../../organism/button/b_rgb_palette"
 import { CX_SS_PALETTE } from "./context"
 
 export default function RGB_TABLE({
@@ -25,7 +25,7 @@ export default function RGB_TABLE({
 			setSS_NewRGB(SS_RGBArr[SS_SelectRGB].rgb)
 	}, [SS_SelectRGB, SS_RGBArr, setSS_NewRGB, editor_or_picker])
 	const rgb_palettes_grids = SS_RGBArr.map((item, index)=>{
-		return <B_RGB_GRID rgb={item.rgb} key={index} 
+		return <B_RGB_PALETTE rgb={item.rgb} key={index} 
 		f_delete={(editor_or_picker !== undefined ? undefined : ()=>{
 			setSS_RGBArr({type:"DELETE", id:SS_RGBArr[index].id})}) as a.t_func}/>
 	})

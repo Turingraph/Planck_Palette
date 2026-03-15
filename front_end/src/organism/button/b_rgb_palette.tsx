@@ -2,7 +2,7 @@ import b_x from "../../asset/items/x.png";
 import * as a from "../../atom/type/alias";
 import B_LOGO from "../../molecule/button/b_logo";
 
-export function B_RGB_GRID({
+export function B_RGB_PALETTE({
 	rgb,
 	f_delete = undefined,
 }:{
