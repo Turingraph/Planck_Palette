@@ -1,10 +1,10 @@
 import { useContext, useReducer } from "react"
+import act_arr from "../../../atom/arr/act"
 import * as a from "../../../atom/type/alias"
 import { CX_SS_PALETTE } from "./context"
 import RGB_TABLE from "./rgb_table"
-import act_arr from "../../../atom/arr/act"
 
-export default function RGB_EDITOR({
+export default function RGB_TABLE_EDITOR({
 	change_ui_mode
 }:{
 	change_ui_mode:a.t_func

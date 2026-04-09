@@ -10,10 +10,12 @@ export type t_B_STR = {
 export default function B_STR({
 	title,
 	func,
-	long_str = false
-}:t_B_STR & {long_str?:boolean})
+	long_str = false,
+	width = undefined
+}:t_B_STR & {long_str?:boolean, width?:undefined|a.t_css})
 {
-	return <button onClick={func} className={`tap`}>
+	const width_style = width !== undefined ? {width:width} : {}
+	return <button onClick={func} className={`tap`} style={width_style}>
 		{long_str === false ? <STR text={title}/> : <LONG_STR text={title}/>}
 	</button>
 }

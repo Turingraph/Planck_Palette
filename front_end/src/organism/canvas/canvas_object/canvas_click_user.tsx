@@ -13,7 +13,6 @@ export default function CANVAS_CLICK_USER()
 	const pixel_rgb = useContext(CX_SS_PAINT_TOOL).new_rgb.ss
 	const pixel_size = useContext(CX_SS_PAINT_TOOL).pixel_size.ss
 	const all_grids = useContext(CONTEXT_CANVAS).all_grids
-	// const {ss: SS_RGBArr, setss: setSS_RGB_Arr} = useContext(CONTEXT_USE_STATE_GLOBAL).rgb_arr
 	let jsx_body = <CANVAS_BASIC
 		pixel_size={pixel_size}
 		f_on_click={((input)=>{
@@ -34,15 +33,6 @@ export default function CANVAS_CLICK_USER()
 				), 
 				input.target,
 				input.rgb)
-			// if (???)
-			// 	setSS_RGB_Arr({
-			// 		type:"PUSH",
-			// 		input:{
-			// 			id:0, 
-			// 			rgb:pixel_rgb, 
-			// 			select:false
-			// 		}
-			// })
 		}) as a.t_func_x<t_practical_shape>}
 	/>
 	return <>{jsx_body}</>

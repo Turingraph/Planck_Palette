@@ -12,7 +12,6 @@ import style from "./main.module.css";
 import RIGHT from "./right/main";
 import { ARR_SAVE, header_height } from "./utils/constant";
 import PAINT_TOOLS from "./utils/paint_tools";
-import { rgb_arr_test } from "./utils/test_constant";
 
 export default function MAIN()
 {
@@ -20,9 +19,7 @@ export default function MAIN()
 	const [SS_DrawMode, setSS_DrawMode] = useState<number>(0)
 	const [SS_PixelSize, setSS_PixelSize] = useState<number>(1)
 	const [SS_RGBArr, setSS_RGBArr] = useReducer(
-		act_arr, rgb_arr_test.map((item,index)=>{
-			return {id:index, select:false, rgb:item}
-		}) as t_rgb_palettes[])
+		act_arr, [] as t_rgb_palettes[])
 	return <div className={`${style.main}`}>
 	<LAYOUT_HEADER
 		header_height={header_height}
@@ -38,7 +35,6 @@ export default function MAIN()
 			<PAINT_TOOLS
 				pixel_size={insert_use_state(SS_PixelSize, setSS_PixelSize)}
 				draw_mode={insert_use_state(SS_DrawMode, setSS_DrawMode)}
-				new_rgb={insert_use_state(SS_NewRGB, setSS_NewRGB)}
 			/>, 
 			<MIDDLE
 				pixel_size={insert_use_state(SS_PixelSize, setSS_PixelSize)}
@@ -46,6 +42,6 @@ export default function MAIN()
 				new_rgb={insert_use_state(SS_NewRGB, setSS_NewRGB)}
 			/>, 
 			<RIGHT/>]}
-		grid_template_rows={"450px 65px 1fr 300px" as a.t_css}
+		grid_template_rows={"450px 60px 1fr 300px" as a.t_css}
 	/>}/></div>
 }

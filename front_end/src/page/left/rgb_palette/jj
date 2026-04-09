@@ -1,0 +1,23 @@
+export default function RGB_PALETTE({
+	new_rgb,
+	rgb_arr
+}:{
+	new_rgb:a.t_use_state<string>,
+	rgb_arr:t_use_arr<t_rgb_palettes, keyof t_rgb_palettes>
+})
+{
+	const [SS_IsEdit, setSS_IsEdit] = useState<boolean>(false)
+	return <LAYOUT_SIDEBAR
+			grid_template_rows={"240px 1fr" as a.t_css}
+			jsx_array={[
+				<div className="fill" style={{backgroundColor:"#4c3841"}}>
+					<div className="center_box">
+						<RGB_PICKER new_rgb={new_rgb}/>
+					</div>
+				</div>
+				,
+				<RGB_HEADER is_edit={SS_IsEdit}/>,
+				<RGB_TABLE is_edit={SS_IsEdit} rgb_arr={rgb_arr}/>
+			]}
+		/>
+}
