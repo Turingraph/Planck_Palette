@@ -19,10 +19,9 @@ This also have the implication that I should make my color palettes able to chan
 
 /*
 To Do Now
-1.	Add UXUI mode (Safe Color Picker and Color Editor Mode)
-2.	Add HUV transformation, select all, delete selected, and unselect all
-3.	Avoid using rgb_button.tsx
-4.	use symbol instead.
+1.	Add HUV transformation
+2.	using rgb_button.tsx with 2 mode (Safe Color Picker and Color editor modes)
+3.	use symbol instead.
 */
 
 export default function RGB_PALETTE({
