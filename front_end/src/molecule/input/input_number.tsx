@@ -19,7 +19,7 @@ export default function INPUT_NUMBER({
 	return <div 
 	onMouseEnter={()=>{setSS_OnMouseEnter(false)}}
 	onMouseLeave={()=>{setSS_OnMouseEnter(true)}}
-	style={{width:"90%"}}
+	style={{width:"100%"}}
 	className={`${style.div}`}>
 		<input 
 		className={`${style.input}`}

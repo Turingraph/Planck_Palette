@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { t_use_arr } from "../../../atom/arr/act"
 import { t_rgb_palettes } from "../../../atom/arr/type"
 import * as a from "../../../atom/type/alias"
 import LAYOUT_SIDEBAR from "../../../organism/layout/layout_sidebar"
-import RGB_BUTTON from "./rgb_button"
+import RGB_TITLE from "./rgb_title"
 import { RGB_PICKER } from "./rgb_picker"
 import RGB_TABLE from "./rgb_table"
-import RGB_TITLE from "./rgb_title"
+import RGB_TRANSFORM from "./rgb_transform"
 
 /*
 I have 2 rules of designing UXUI
@@ -20,7 +20,7 @@ This also have the implication that I should make my color palettes able to chan
 /*
 To Do Now
 1.	Add HUV transformation
-2.	using rgb_button.tsx with 2 mode (Safe Color Picker and Color editor modes)
+2.	using RGB_TITLE.tsx with 2 mode (Safe Color Picker and Color editor modes)
 3.	use symbol instead.
 */
 
@@ -33,18 +33,20 @@ export default function RGB_PALETTE({
 })
 {
 	const [SS_IsEdit, setSS_IsEdit] = useState<boolean>(false)
+	const Ref_RGB_Picker = useRef<any>(null)
 	return <LAYOUT_SIDEBAR
-			grid_template_rows={"270px 1fr" as a.t_css}
+			grid_template_rows={"240px 32px 1fr" as a.t_css}
 			jsx_array={[
 				<LAYOUT_SIDEBAR
 					axis_x={false}
-					grid_template_rows={"220px 1fr" as a.t_css}
+					grid_template_rows={"230px 1fr" as a.t_css}
 					jsx_array={[
-						<RGB_PICKER new_rgb={new_rgb}/>,
-						<RGB_TITLE/>
+						<RGB_PICKER ref_rgb_picker={Ref_RGB_Picker} new_rgb={new_rgb}/>,
+						<RGB_TRANSFORM rgb_picker={Ref_RGB_Picker.current}/>,
 					]}
 				/>
 				,
+				<RGB_TITLE is_edit={{ss:SS_IsEdit, setss:setSS_IsEdit}}/>,
 				<RGB_TABLE is_edit={SS_IsEdit} rgb_arr={rgb_arr}/>
 			]}
 		/>

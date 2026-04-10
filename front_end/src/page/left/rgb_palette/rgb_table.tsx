@@ -17,7 +17,7 @@ export default function RGB_TABLE({
 {
 	const [SS_SelectRGB, setSS_SelectRGB] = useState<number>(0)
 	const Ref_Table = useRef<any>(null)
-	const [SS_TableHeight, setSS_TableHeight] = useState<undefined|number>(undefined)
+	const [SS_TableHeight, setSS_TableHeight] = useState<number>(0)
 	const {
 		Ref_DragOldIndex	,
 		Ref_DragNewIndex	,
@@ -41,10 +41,9 @@ export default function RGB_TABLE({
 			setSS_Arr:rgb_arr.setss,
 			high_light:is_edit === undefined ? false : true
 		}}>
-	<hr className="invisible_line"/>
 	<div ref={Ref_Table} className="fill" style={{
 		backgroundColor:"blueviolet",
-		height:"calc(100vh - " + (SS_TableHeight ? SS_TableHeight : "0") + "px)", 
+		height:"calc(100vh - " + SS_TableHeight + "px)", 
 		overflowY: "auto"}}>
 	{/*** RGB_PICKER ***/}
 	{is_edit === false ? 
@@ -57,7 +56,6 @@ export default function RGB_TABLE({
 		class_name={"left_table_taps"}
 		jsx_select_array={rgb_palettes_grids}
 		arr={rgb_arr}
-	/>
-	}</div>
+	/>}</div>
 	</CONTEXT_DRAG>
 }

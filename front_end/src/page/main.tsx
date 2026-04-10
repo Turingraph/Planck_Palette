@@ -2,7 +2,6 @@ import { useReducer, useState } from "react";
 import act_arr from "../atom/arr/act";
 import { t_rgb_palettes } from "../atom/arr/type";
 import * as a from "../atom/type/alias";
-import { insert_use_arr, insert_use_state } from "../molecule/utils/format_object";
 import MIDDLE from "../organism/canvas/main";
 import LAYOUT_HEADER from "../organism/layout/layout_header";
 import LAYOUT_SIDEBAR from "../organism/layout/layout_sidebar";
@@ -29,17 +28,17 @@ export default function MAIN()
 		axis_x={false}
 		jsx_array={[
 			<LEFT
-				new_rgb={insert_use_state(SS_NewRGB, setSS_NewRGB)}
-				rgb_arr={insert_use_arr(SS_RGBArr, setSS_RGBArr)}
+				new_rgb={{ss:SS_NewRGB, setss:setSS_NewRGB}}
+				rgb_arr={{ss:SS_RGBArr, setss:setSS_RGBArr}}
 			/>, 
 			<PAINT_TOOLS
-				pixel_size={insert_use_state(SS_PixelSize, setSS_PixelSize)}
-				draw_mode={insert_use_state(SS_DrawMode, setSS_DrawMode)}
+				pixel_size={{ss:SS_PixelSize, setss:setSS_PixelSize}}
+				draw_mode={{ss:SS_DrawMode, setss:setSS_DrawMode}}
 			/>, 
 			<MIDDLE
-				pixel_size={insert_use_state(SS_PixelSize, setSS_PixelSize)}
-				draw_mode={insert_use_state(SS_DrawMode, setSS_DrawMode)}
-				new_rgb={insert_use_state(SS_NewRGB, setSS_NewRGB)}
+				pixel_size={{ss:SS_PixelSize, setss:setSS_PixelSize}}
+				draw_mode={{ss:SS_DrawMode, setss:setSS_DrawMode}}
+				new_rgb={{ss:SS_NewRGB, setss:setSS_NewRGB}}
 			/>, 
 			<RIGHT/>]}
 		grid_template_rows={"450px 60px 1fr 300px" as a.t_css}

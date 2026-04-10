@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@types/react-color": "^3.0.13",
     "npx": "^3.0.0",
     "react": "^19.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "^19.2.0"
   }
 }
