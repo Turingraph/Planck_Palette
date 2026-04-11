@@ -1,23 +1,58 @@
 import B_STR, { t_B_STR } from "../../../molecule/button/b_str"
-import * as a from "../../../atom/type/alias";
 import STR_DESCRIPTOR from "../../../atom/str/str_descriptor";
-import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap";
 import INPUT_NUMBER from "../../../molecule/input/input_number";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LAYOUT_SIDEBAR from "../../../organism/layout/layout_sidebar";
 import STR from "../../../atom/str/str";
-import STR_HEADER from "../../../atom/str/str_header";
+import { margin_x } from "../../../atom/type/css";
+import * as a from "../../../atom/type/alias"
+import INPUT_RANGE from "../../../molecule/input/input_range";
+
+// https://www.w3schools.com/hTml/html_colors_hsl.asp
 
 export default function RGB_TRANSFORM({
-	rgb_picker
+	new_rgb
 }:{
-	rgb_picker:any
+	new_rgb:a.t_use_state<string>
 })
 {
 	const [SS_RGB_PCADim, setSS_RGB_PCADim] = useState<number>(1)
 	const [SS_RGB_KMean, setSS_RGB_KMean] = useState<number>(1)
-	const { Hue } = require('react-color/lib/components/common');
-	const transform_button = ([
+	// https://www.w3schools.com/hTml/html_colors_hsl.asp
+	// https://youtu.be/4emFL4aV9WM?si=_hUOx08uOuet23o5
+	// (00:31)
+	const [SS_H, setSS_H] = useState<number>(0)
+	const [SS_S, setSS_S] = useState<number>(0)
+	const [SS_L, setSS_L] = useState<number>(0)
+	useEffect(()=>{
+		if (SS_H > 50)
+			new_rgb.setss("#0000FF")
+	}, [SS_H])
+	const transform_ranges = ([
+		{
+			title:"H",
+			use_state:{ss:SS_H, setss:setSS_H},
+		},
+		{
+			title:"S",
+			use_state:{ss:SS_S, setss:setSS_S},
+		},
+		{
+			title:"L",
+			use_state:{ss:SS_L, setss:setSS_L},
+		},
+	] as {title:string, use_state:a.t_use_state<number>, description:a.t_str_hover}[]).map((item, index)=>{
+		return <LAYOUT_SIDEBAR
+			key={index}
+			axis_x={false}
+			grid_template_rows={"20px 1fr" as a.t_css}
+			jsx_array={[
+				<STR text={item.title}/>,
+				<INPUT_RANGE use_state={item.use_state} width={"100%" as a.t_css}/>
+			]}
+		/>
+	})
+	const transform_buttons = ([
 		{
 			title:"PCA 10 RGB as",
 			func:(()=>{console.log("LPop")}) as a.t_func,
@@ -40,8 +75,9 @@ export default function RGB_TRANSFORM({
 	] as (t_B_STR & {description:a.t_str_hover|undefined,
 		use_state:a.t_use_state<number>, min:number, max:number, unit:string})[]).map((item, index)=>{
 		return <LAYOUT_SIDEBAR
-		axis_x={false}
-			grid_template_rows={"145px 1fr 40px" as a.t_css}
+			key={index}
+			axis_x={false}
+			grid_template_rows={"135px 1fr 35px" as a.t_css}
 			jsx_array={[
 				<STR_DESCRIPTOR
 					jsx_body={<B_STR title={item.title} func={item.func}/>}
@@ -52,21 +88,17 @@ export default function RGB_TRANSFORM({
 			]}
 		/>
 	})
-	return <div className="fill" style={{backgroundColor:"crimson"}}>
-	<div className="middle_taps_y">
-		<B_STR width={"100%" as a.t_css} title={"Add #000000 RGB"} func={(()=>{console.log("LPop")}) as a.t_func} />
-		<hr className="invisible_line"/>
-		{/* <Hue
-			// pointer={rgb_picker}
-			onChange={(()=>{})}
-			// direction={ 'horizontal' } 
-			/> */}
-		<hr className="invisible_line"/>
-
-		{transform_button}
-	</div>
-	{/* <div className="center_box">
-		<B_STR width={"100%" as a.t_css} title={"Add New Color"} func={(()=>{console.log("LPop")}) as a.t_func} />
-	</div> */}
-	</div>
+	return <LAYOUT_SIDEBAR
+		grid_template_rows={"1fr 10px 110px" as a.t_css}
+		jsx_array={[<div className="middle_taps_y" style={{backgroundColor:"greenyellow", width:"calc(100% - " + margin_x * 2 + "px )"}}>
+			<STR text="Hue/Saturation"/>
+			{transform_ranges}
+			<B_STR width={"100%" as a.t_css} title={"Add #000000 RGB"} func={(()=>{console.log("LPop")}) as a.t_func} />
+		</div>,
+		<div></div>,
+		<div className="middle_taps_y" style={{backgroundColor:"blueviolet", marginLeft:margin_x + "px", marginRight:margin_x + "px"}}>
+			<STR text="Advance Setting"/>
+			{transform_buttons}
+		</div>]}
+	/>
 }

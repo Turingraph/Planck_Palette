@@ -1,3 +1,4 @@
+import STR_DESCRIPTOR from "../../atom/str/str_descriptor"
 import * as a from "../../atom/type/alias"
 import { CONTEXT_OTHER_JSX } from "../../atom/utils/context"
 import B_LOGO from "../../molecule/button/b_logo"
@@ -23,9 +24,11 @@ style={{
 >
 	<CONTEXT_OTHER_JSX value={{
 		front:[
-		<INPUT_NUMBER 
+		<STR_DESCRIPTOR
+		jsx_body={<INPUT_NUMBER 
+		use_state={pixel_size}/>}
 		description={"Set pen size" as a.t_str_hover}
-		use_state={pixel_size}/>
+		/>
 		],
 		back:undefined
 	}}>

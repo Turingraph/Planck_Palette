@@ -60,9 +60,9 @@ export default function RGB_TITLE({
 			description:"update all modification on RGB set"
 		},
 		{
-			title:"Cancel",
+			title:"Reset RGB",
 			func:(()=>{is_edit.setss(false)}) as a.t_func,
-			description:"undo all modification on RGB set"
+			description:"reset all modification on RGB set"
 		},
 	] as (t_B_STR & {description:a.t_str_hover|undefined})[]).map((item, index)=>{
 		return <STR_DESCRIPTOR

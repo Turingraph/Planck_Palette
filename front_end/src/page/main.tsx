@@ -41,6 +41,6 @@ export default function MAIN()
 				new_rgb={{ss:SS_NewRGB, setss:setSS_NewRGB}}
 			/>, 
 			<RIGHT/>]}
-		grid_template_rows={"450px 60px 1fr 300px" as a.t_css}
+		grid_template_rows={"460px 60px 1fr 300px" as a.t_css}
 	/>}/></div>
 }

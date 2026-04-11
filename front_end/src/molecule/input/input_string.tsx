@@ -1,6 +1,6 @@
 import LONG_STR from "../../atom/str/long_str";
 import * as a from "../../atom/type/alias";
-import style from "./input_number.module.css";
+import style from "./index.module.css";
 
 export default function INPUT_STRING({
 	use_state,
@@ -12,10 +12,10 @@ export default function INPUT_STRING({
 	unit?:undefined|string
 })
 {
-	return <div className={`${style.div}`}>
+	return <div className="middle_taps_x">
 	{title !== undefined ? <LONG_STR text={title}/> : <></>}
 	<input 
-	className={`${style.input}`}
+	className={`${style.input} fill`}
 	type="string" 
 	onChange={e=>{
 		use_state.setss(e.target.value)

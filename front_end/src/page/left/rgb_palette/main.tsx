@@ -35,14 +35,14 @@ export default function RGB_PALETTE({
 	const [SS_IsEdit, setSS_IsEdit] = useState<boolean>(false)
 	const Ref_RGB_Picker = useRef<any>(null)
 	return <LAYOUT_SIDEBAR
-			grid_template_rows={"240px 32px 1fr" as a.t_css}
+			grid_template_rows={"300px 32px 1fr" as a.t_css}
 			jsx_array={[
 				<LAYOUT_SIDEBAR
 					axis_x={false}
-					grid_template_rows={"230px 1fr" as a.t_css}
+					grid_template_rows={"245px 1fr" as a.t_css}
 					jsx_array={[
-						<RGB_PICKER ref_rgb_picker={Ref_RGB_Picker} new_rgb={new_rgb}/>,
-						<RGB_TRANSFORM rgb_picker={Ref_RGB_Picker.current}/>,
+						<div className="fill middle_taps_y" style={{backgroundColor:"crimson"}}><RGB_PICKER new_rgb={new_rgb}/></div>,
+						<RGB_TRANSFORM new_rgb={new_rgb}/>,
 					]}
 				/>
 				,
@@ -51,3 +51,5 @@ export default function RGB_PALETTE({
 			]}
 		/>
 }
+
+// 245px + 1fr = 460px
