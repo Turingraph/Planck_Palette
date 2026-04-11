@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react"
-import { t_use_arr } from "../../../atom/arr/act"
+import { useState, useRef, useEffect, useReducer } from "react"
+import act_arr, { t_use_arr } from "../../../atom/arr/act"
 import { t_rgb_palettes } from "../../../atom/arr/type"
 import { SELECT_MULTI_TAPS } from "../../../molecule/selection_taps/select_multi_taps"
 import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap"
@@ -8,9 +8,11 @@ import { B_RGB_PALETTE } from "../../../organism/button/b_rgb_palette"
 import * as a from "../../../atom/type/alias"
 
 export default function RGB_TABLE({
+	new_rgb,
 	is_edit,
 	rgb_arr
 }:{
+	new_rgb:a.t_use_state<string>,
 	is_edit:boolean
 	rgb_arr:t_use_arr<t_rgb_palettes, keyof t_rgb_palettes>
 })
@@ -23,6 +25,14 @@ export default function RGB_TABLE({
 		Ref_DragNewIndex	,
 		SS_DragOldIndex		,
 		setSS_DragOldIndex } = useDragArr()
+	useEffect(()=>{
+		if (SS_SelectRGB < rgb_arr.ss.length && SS_SelectRGB >= 0 && is_edit === false)
+			new_rgb.setss(rgb_arr.ss[SS_SelectRGB].rgb)
+	}, [SS_SelectRGB])
+	useEffect(()=>{
+		if (SS_SelectRGB >= rgb_arr.ss.length && rgb_arr.ss.length >= 1)
+			setSS_SelectRGB(rgb_arr.ss.length === 0 ? 0 : rgb_arr.ss.length - 1)
+	})
 	useEffect(()=>{
 		if (Ref_Table.current)
 			setSS_TableHeight(Ref_Table.current?.getBoundingClientRect().y)
@@ -42,7 +52,8 @@ export default function RGB_TABLE({
 			high_light:is_edit === undefined ? false : true
 		}}>
 	<div ref={Ref_Table} className="fill" style={{
-		backgroundColor:"blueviolet",
+		backgroundColor:"#AAAAAA",
+		padding:"5px",
 		height:"calc(100vh - " + SS_TableHeight + "px)", 
 		overflowY: "auto"}}>
 	{/*** RGB_PICKER ***/}

@@ -7,7 +7,11 @@ import { t_practical_shape, t_rgb_point } from "../utils/type";
 import CANVAS_BASIC from "./canvas_basic";
 import { CONTEXT_CANVAS, CX_SS_PAINT_TOOL } from "../utils/context";
 
-export default function CANVAS_CLICK_USER()
+export default function CANVAS_CLICK_USER({
+	readonly = false
+}:{
+	readonly?:boolean
+})
 {
 	// const tool_mode = useContext(CONTEXT_SS_GLOBAL_STUDIO).tool_mode
 	const pixel_rgb = useContext(CX_SS_PAINT_TOOL).new_rgb.ss
