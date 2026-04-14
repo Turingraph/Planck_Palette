@@ -14,7 +14,14 @@ import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap";
 
 // https://www.w3schools.com/hTml/html_colors_hsl.asp
 
-export default function RGB_Replace({
+/*
+To Do Now
+1.	Hue/Saturation Transform
+2.	K-Means
+3.	PCA
+*/
+
+export default function RGB_TRANSFORM({
 	new_rgb,
 	rgb_arr,
 	is_edit
@@ -33,6 +40,7 @@ export default function RGB_Replace({
 	// https://www.w3schools.com/hTml/html_colors_hsl.asp
 	// https://youtu.be/4emFL4aV9WM?si=_hUOx08uOuet23o5
 	// (00:31)
+	// https://stackoverflow.com/questions/39118528/rgb-to-hsl-conversion
 	const [SS_H, setSS_H] = useState<number>(0)
 	const [SS_S, setSS_S] = useState<number>(0)
 	const [SS_L, setSS_L] = useState<number>(0)
@@ -74,7 +82,7 @@ export default function RGB_Replace({
 			]}
 		/>
 	})
-	const Replace_buttons = ([
+	const transform_buttons = ([
 		{
 			title:"PCA " + selected_rgb + " RGB",
 			func:(()=>{console.log("LPop")}) as a.t_func,
@@ -137,7 +145,7 @@ export default function RGB_Replace({
 				</select>,
 				<STR text={"Multiple RGBs"}/>,
 			]}/>
-			{Replace_buttons}
+			{transform_buttons}
 		</div>]}
 	/>
 }

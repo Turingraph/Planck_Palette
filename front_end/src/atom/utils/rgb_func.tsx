@@ -141,3 +141,38 @@ export function hex_to_rgb(input:undefined|string)
 		Number(translate_hex_char(up_input[5])) * 16 + Number(translate_hex_char(up_input[6])),
 	] as [number, number, number]
 }
+
+// https://stackoverflow.com/questions/39118528/rgb-to-hsl-conversion
+export function rgb_to_hue(rgb:[number,number,number])
+{
+	let r = rgb[0]/255
+	let g = rgb[1]/255
+	let b = rgb[2]/255
+	let max = Math.max(r, g, b);
+	let min = Math.min(r, g, b);
+	let c = max - min
+	let hue = 0
+	if (c === 0)
+		return (hue)
+	if (max === r)
+	{
+		const seg = (g - b) / c
+		let shift = 0
+		if (seg < 0)
+			shift = 6
+		hue = seg + shift
+	}
+	if (max === g)
+	{
+		const seg = (b - r) / c
+		let shift = 2
+		hue = seg + shift
+	}
+	if (max === b)
+	{
+		const seg = (r - g) / c
+		let shift = 4
+		hue = seg + shift
+	}
+	return (hue * 60)
+}
