@@ -41,7 +41,7 @@ export function count_selected_items<t extends object, k extends keyof t>(arr:t[
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 export function filter_array<t extends object, k extends keyof t>(arr:t[], target:t[k], key:k)
 {
-	return arr.filter((item) => item[key] != target)
+	return arr.filter((item) => item[key] !== target)
 }
 
 export function reset_key_value<t extends object, k extends keyof t>(arr:t[], target:t[k], key:k)

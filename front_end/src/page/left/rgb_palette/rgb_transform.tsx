@@ -10,10 +10,11 @@ import INPUT_RANGE from "../../../molecule/input/input_range";
 import { t_use_arr } from "../../../atom/arr/act";
 import { t_rgb_palettes } from "../../../atom/arr/type";
 import { count_selected_items, is_arr_has } from "../../../atom/arr/utils";
+import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap";
 
 // https://www.w3schools.com/hTml/html_colors_hsl.asp
 
-export default function RGB_TRANSFORM({
+export default function RGB_Replace({
 	new_rgb,
 	rgb_arr,
 	is_edit
@@ -23,6 +24,7 @@ export default function RGB_TRANSFORM({
 	is_edit:boolean
 })
 {
+	const [SS_ReplaceMode, setSS_ReplaceMode] = useState<"Create"|"Replace">("Create")
 	const [SS_RGB_PCADim, setSS_RGB_PCADim] = useState<number>(1)
 	const selected_rgb = is_edit ? count_selected_items(rgb_arr.ss, true, "select") : 0
 	const [SS_RGB_KMean, setSS_RGB_KMean] = useState<number>(selected_rgb < 2 ? selected_rgb : 1)
@@ -37,7 +39,7 @@ export default function RGB_TRANSFORM({
 	useEffect(()=>{
 		if (SS_H > 50)
 			new_rgb.setss("#0000FF")
-	}, [SS_H])
+	}, [SS_H, new_rgb])
 	useEffect(()=>{
 		const min = selected_rgb < 2 ? selected_rgb : 1
 		const max = selected_rgb < 2 ? selected_rgb : selected_rgb - 1
@@ -47,8 +49,8 @@ export default function RGB_TRANSFORM({
 			setSS_RGB_KMean(min)
 		else if (SS_RGB_KMean > max)
 			setSS_RGB_KMean(max)
-	}, [selected_rgb])
-	const transform_ranges = ([
+	}, [SS_RGB_KMean, selected_rgb])
+	const transform_range = ([
 		{
 			title:"H",
 			use_state:{ss:SS_H, setss:setSS_H},
@@ -72,27 +74,28 @@ export default function RGB_TRANSFORM({
 			]}
 		/>
 	})
-	const transform_buttons = ([
+	const Replace_buttons = ([
 		{
-			title:"PCA " + selected_rgb + " RGB as",
+			title:"PCA " + selected_rgb + " RGB",
 			func:(()=>{console.log("LPop")}) as a.t_func,
-			description:"Simplify " + selected_rgb + " selected RGB to " + SS_RGB_PCADim + "D RGB subspace",
+			create_text:"Create " + selected_rgb + " RGBs as " + selected_rgb + " " + SS_RGB_PCADim + "D RGBs based on " + selected_rgb + " selected RGBs",
+			Replace_text:"Replace " + selected_rgb + " selected RGBs as " + selected_rgb + " " + SS_RGB_PCADim + "D RGBs",
 			min:1,
 			max:2,
 			use_state:{ss:SS_RGB_PCADim, setss:setSS_RGB_PCADim},
 			unit:"dim"
-
 		},
 		{
-			title:"K-Mean " + selected_rgb + " RGB to",
+			title:"Simplify " + selected_rgb + " RGB to",
 			func:(()=>{console.log("LPop")}) as a.t_func,
-			description:"Compress " + selected_rgb + " selected RGB to " + SS_RGB_KMean + " selected RGB",
+			create_text:"Create " + SS_RGB_KMean + " RGBs as simplified version of " + selected_rgb + " selected RGBs",
+			Replace_text:"Replace " + selected_rgb + " selected RGBs as simplified " + SS_RGB_KMean + " RGBs",
 			min:SS_Min_KMean,
 			max:SS_Max_KMean,
 			use_state:{ss:SS_RGB_KMean, setss:setSS_RGB_KMean},
 			unit:"RGB"
 		},
-	] as (t_B_STR & {description:a.t_str_hover|undefined,
+	] as (t_B_STR & {create_text:a.t_str_hover|undefined, Replace_text:a.t_str_hover|undefined,
 		use_state:a.t_use_state<number>, min:number, max:number, unit:string})[]).map((item, index)=>{
 		return <LAYOUT_SIDEBAR
 			key={index}
@@ -100,28 +103,41 @@ export default function RGB_TRANSFORM({
 			grid_template_rows={"135px 1fr 35px" as a.t_css}
 			jsx_array={[
 				<STR_DESCRIPTOR
-					jsx_body={<B_STR title={item.title} func={item.func}/>}
-					description={item.description}
+					jsx_body={<SELECT_ONE_TAP class_name={"left_taps"} jsx_select_array={[<B_STR title={item.title} func={item.func}/>]}/>}
+					description={SS_ReplaceMode === "Create" ? item.create_text : item.Replace_text}
 				/>,
 				<INPUT_NUMBER min={item.min} max={item.max} use_state={item.use_state}/>,
 				<STR text={item.unit}/>
 			]}
 		/>
 	})
-	const b_add_new_color = <B_STR width={"100%" as a.t_css} title={"Add " + new_rgb.ss + " RGB"} func={(()=>{
+	const b_add_new_color = <SELECT_ONE_TAP jsx_select_array={[<B_STR width={"100%" as a.t_css} title={"Add " + new_rgb.ss + " RGB"} func={(()=>{
 		if (is_arr_has(rgb_arr.ss, new_rgb.ss, "rgb") === false)
-			rgb_arr.setss({type:"PUSH", input:{id:0, select:false, rgb:new_rgb.ss}})}) as a.t_func} />
+			rgb_arr.setss({type:"PUSH", input:{id:0, select:false, rgb:new_rgb.ss}})}) as a.t_func} />]}/>
 	return <LAYOUT_SIDEBAR
 		grid_template_rows={"1fr 10px 110px" as a.t_css}
 		jsx_array={[<div className="middle_taps_y" style={{backgroundColor:"greenyellow", width:"calc(100% - " + margin_x * 2 + "px )"}}>
 			<STR text="Hue/Saturation"/>
-			{transform_ranges}
+			{transform_range}
 			{b_add_new_color}
 		</div>,
 		<div></div>,
 		<div className="middle_taps_y" style={{backgroundColor:"blueviolet", marginLeft:margin_x + "px", marginRight:margin_x + "px"}}>
-			<STR text={"Transform " + selected_rgb + " RGBs"}/>
-			{transform_buttons}
+			<LAYOUT_SIDEBAR
+				axis_x={false}
+				grid_template_rows={"1fr 1fr" as a.t_css}
+				jsx_array={[
+				<select className="select" 
+					onChange={(e:any)=>{
+						setSS_ReplaceMode(e.target.value)
+					}}
+					value={SS_ReplaceMode}>
+					<option value="Create">{"Create"}</option>
+					<option value="Replace">{"Replace"}</option>
+				</select>,
+				<STR text={selected_rgb + " RGBs"}/>,
+			]}/>
+			{Replace_buttons}
 		</div>]}
 	/>
 }
