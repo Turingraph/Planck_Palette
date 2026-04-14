@@ -8,8 +8,6 @@ import { RGB_PICKER } from "./rgb_picker"
 import RGB_TABLE from "./rgb_table"
 import RGB_TRANSFORM from "./rgb_transform"
 import { reset_key_value } from "../../../atom/arr/utils"
-import B_STR from "../../../molecule/button/b_str"
-import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap"
 import RGB_RANDOM from "./rgb_random"
 
 export default function RGB_PALETTE({
@@ -28,7 +26,7 @@ export default function RGB_PALETTE({
 			setSS_Edit_RGB_Arr({type:"SET", input:rgb_arr.ss})
 		else
 			reset_key_value(SS_Edit_RGB_Arr, false, "select")
-	}, [SS_IsEdit])
+	}, [SS_Edit_RGB_Arr, SS_IsEdit, rgb_arr.ss])
 	return <LAYOUT_SIDEBAR
 			grid_template_rows={"280px 42px 1fr" as a.t_css}
 			jsx_array={[
