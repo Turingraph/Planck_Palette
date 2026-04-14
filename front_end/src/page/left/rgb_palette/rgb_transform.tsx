@@ -76,7 +76,7 @@ export default function RGB_TRANSFORM({
 		{
 			title:"PCA " + selected_rgb + " RGB as",
 			func:(()=>{console.log("LPop")}) as a.t_func,
-			description:"Reduce the dimension of " + selected_rgb + " selected RGB color to " + SS_RGB_PCADim + "D RGB subspace",
+			description:"Simplify " + selected_rgb + " selected RGB to " + SS_RGB_PCADim + "D RGB subspace",
 			min:1,
 			max:2,
 			use_state:{ss:SS_RGB_PCADim, setss:setSS_RGB_PCADim},

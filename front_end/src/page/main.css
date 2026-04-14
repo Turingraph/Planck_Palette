@@ -18,7 +18,15 @@ https://youtu.be/0pP3Ao_5AIE?si=QGkMqBb4bEwrIRNK
 
 .str {
 	font-size:14px;
-	padding:5px; 
+	padding:5px;
+	font-weight: bold;
+}
+
+.select {
+	font-size:14px;
+	padding:3px;
+	font-weight: bold;
+	border-radius: 0px;
 }
 
 .long_str {

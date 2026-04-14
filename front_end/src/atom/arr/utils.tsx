@@ -54,3 +54,10 @@ export function reset_key_value<t extends object, k extends keyof t>(arr:t[], ta
 	}
 	return (arr)
 }
+
+export function get_value_arr<t extends object, k extends keyof t>(arr:t[], key:k)
+{
+	return (arr.map((item, index:number)=>{
+		return item[key]
+	}))
+}

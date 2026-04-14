@@ -8,6 +8,9 @@ import { RGB_PICKER } from "./rgb_picker"
 import RGB_TABLE from "./rgb_table"
 import RGB_TRANSFORM from "./rgb_transform"
 import { reset_key_value } from "../../../atom/arr/utils"
+import B_STR from "../../../molecule/button/b_str"
+import SELECT_ONE_TAP from "../../../molecule/selection_taps/select_one_tap"
+import RGB_RANDOM from "./rgb_random"
 
 export default function RGB_PALETTE({
 	new_rgb,
@@ -27,13 +30,16 @@ export default function RGB_PALETTE({
 			reset_key_value(SS_Edit_RGB_Arr, false, "select")
 	}, [SS_IsEdit])
 	return <LAYOUT_SIDEBAR
-			grid_template_rows={"260px 42px 1fr" as a.t_css}
+			grid_template_rows={"280px 42px 1fr" as a.t_css}
 			jsx_array={[
 				<LAYOUT_SIDEBAR
 					axis_x={false}
 					grid_template_rows={"245px 1fr" as a.t_css}
 					jsx_array={[
-						<div className="fill middle_taps_y" style={{backgroundColor:"crimson"}}><RGB_PICKER new_rgb={new_rgb}/></div>,
+						<div className="fill middle_taps_y" style={{backgroundColor:"crimson"}}>
+							<RGB_PICKER new_rgb={new_rgb}/>
+							<RGB_RANDOM rgb_arr={rgb_arr}/>
+						</div>,
 						<RGB_TRANSFORM new_rgb={new_rgb} rgb_arr={const_rgb_arr} is_edit={SS_IsEdit}/>,
 					]}
 				/>
