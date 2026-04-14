@@ -135,7 +135,7 @@ export default function RGB_Replace({
 					<option value="Create">{"Create"}</option>
 					<option value="Replace">{"Replace"}</option>
 				</select>,
-				<STR text={selected_rgb + " RGBs"}/>,
+				<STR text={"Multiple RGBs"}/>,
 			]}/>
 			{Replace_buttons}
 		</div>]}
