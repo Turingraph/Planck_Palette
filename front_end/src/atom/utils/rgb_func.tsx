@@ -14,6 +14,13 @@ export function limit_255(input:number){
     return Math.floor(limit_size(input,255))
 }
 
+export function fill_2(text:string)
+{
+	if (text.length === 1)
+		return ('0' + text)
+	return (text)
+}
+
 export function rgb_to_hex(input:undefined|number|number[]){
 	if (input === undefined){
 		return "#FFFFFF"
@@ -26,13 +33,13 @@ export function rgb_to_hex(input:undefined|number|number[]){
 			return "#FFFFFF"
 		}
 		else if (input.length === 1){
-			return "#"+limit_255(input[0]).toString(16) + limit_255(input[0]).toString(16) + limit_255(input[0]).toString(16);
+			return "#"+fill_2(limit_255(input[0]).toString(16)) + fill_2(limit_255(input[0]).toString(16)) + fill_2(limit_255(input[0]).toString(16));
 		}
 		else if (input.length === 2){
-			return "#"+limit_255(input[0]).toString(16)+limit_255(input[1]).toString(16);
+			return "#"+fill_2(limit_255(input[0]).toString(16))+fill_2(limit_255(input[1]).toString(16));
 		}
 		else{
-			return "#"+limit_255(input[0]).toString(16)+limit_255(input[1]).toString(16) + limit_255(input[2]).toString(16);
+			return "#"+fill_2(limit_255(input[0]).toString(16))+fill_2(limit_255(input[1]).toString(16)) + fill_2(limit_255(input[2]).toString(16));
 		}
 	}
 	else{

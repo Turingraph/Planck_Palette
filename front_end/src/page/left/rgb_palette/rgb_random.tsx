@@ -131,6 +131,7 @@ export default function RGB_RANDOM({
 					while (is_arr_has(rgb_arr.ss, new_rgb, "rgb") === true)
 						new_rgb = get_random_normal_rgb(minmax_rgb)
 				}
+				console.log(new_rgb)
 				rgb_arr.setss({
 					type:"PUSH",
 					input:{id:0, rgb:new_rgb, select:false}
